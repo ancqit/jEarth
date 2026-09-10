@@ -1,0 +1,23 @@
+<header class="top">
+  <a class="brand" routerLink="/">
+    <img src="favicon.svg" width="32" height="32" alt="" />
+    <span>
+      <strong>jEarth</strong>
+      <small>Junction</small>
+    </span>
+  </a>
+  <nav>
+    <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Earth</a>
+    <a routerLink="/guide" routerLinkActive="on">Waste guide</a>
+    <a routerLink="/sort" routerLinkActive="on">Check waste</a>
+    <a routerLink="/heroes" routerLinkActive="on">Heroes</a>
+    <a routerLink="/mushrooms" routerLinkActive="on">Mushrooms</a>
+  </nav>
+  <a class="today" href="https://junction.today" target="_blank" rel="noreferrer">junction.today</a>
+</header>
+<main>
+  <router-outlet />
+</main>
+<footer class="foot">
+  <p>A Junction earth desk. Style from junction.today / junctionFrontweb. Catalog and bag bookings use junctionBack.</p>
+</footer>

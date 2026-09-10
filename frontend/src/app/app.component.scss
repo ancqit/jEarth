@@ -1,0 +1,122 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.15rem;
+  background: rgba(255, 252, 245, 0.78);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand img {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 0.65rem;
+  box-shadow: 0 4px 12px rgba(25, 75, 49, 0.18);
+}
+
+.brand strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.brand small {
+  display: block;
+  margin-top: 0.1rem;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest-mid);
+  font-weight: 700;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+nav a,
+.today {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+nav a.on,
+nav a:hover,
+.today:hover {
+  color: var(--forest);
+  background: rgba(243, 215, 130, 0.28);
+}
+
+.today {
+  border: 1px solid rgba(243, 215, 130, 0.9);
+  background: #f3d782;
+  color: #194b31;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+main {
+  width: min(72rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.75rem 0 2rem;
+  flex: 1;
+}
+
+.foot {
+  width: min(72rem, calc(100% - 2rem));
+  margin: 0 auto 1.5rem;
+  color: var(--mute);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 720px) {
+  .top {
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .today {
+    margin-left: auto;
+  }
+}

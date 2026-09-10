@@ -1,0 +1,26 @@
+<section class="hero">
+  <p class="kicker">Waste guidebook</p>
+  <h1>Read this until mixed waste looks like a spelling error.</h1>
+  <p class="lede">
+    Eight chapters, plus a sorting lab and a country room. Wet and dry are the first words; they
+    are not the whole language. Work in order if you are new. Skip to disposal if you already sort
+    and still do not know where the truck goes.
+  </p>
+  <div class="cta">
+    <a class="btn btn-primary" routerLink="/sort">Check waste in the lab</a>
+    <a class="btn btn-ghost" routerLink="/heroes">Waste-hero countries</a>
+  </div>
+</section>
+
+<ol class="toc">
+  @for (article of articles; track article.slug; let i = $index) {
+    <li class="card">
+      <span class="num">{{ i + 1 }}</span>
+      <div>
+        <p class="kicker">{{ article.chapter }} · {{ article.minutes }} min</p>
+        <h2><a [routerLink]="['/guide', article.slug]">{{ article.title }}</a></h2>
+        <p>{{ article.summary }}</p>
+      </div>
+    </li>
+  }
+</ol>

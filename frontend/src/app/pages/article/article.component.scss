@@ -1,0 +1,109 @@
+.doc {
+  width: min(46rem, 100%);
+}
+
+.doc h1 {
+  margin: 0.35rem 0 0.75rem;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  line-height: 1.1;
+}
+
+.doc h2 {
+  margin: 1.8rem 0 0.6rem;
+  font-size: 1.45rem;
+}
+
+.doc h3 {
+  margin: 1.2rem 0 0.4rem;
+  font-size: 1.15rem;
+}
+
+.doc p,
+.doc li {
+  line-height: 1.58;
+  color: var(--ink-soft);
+}
+
+.doc ul,
+.doc ol {
+  padding-left: 1.2rem;
+}
+
+.callout {
+  margin: 1.1rem 0;
+  padding: 0.95rem 1.05rem;
+  border-radius: var(--radius);
+  background: rgba(25, 75, 49, 0.07);
+  border: 1px solid var(--line);
+}
+
+.callout.gold {
+  background: rgba(243, 215, 130, 0.35);
+}
+
+.callout.warn {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.callout strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--forest);
+}
+
+.callout p {
+  margin: 0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-solid);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  color: var(--ink-soft);
+}
+
+th {
+  color: var(--forest);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.steps {
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+
+.steps ol {
+  margin: 0.4rem 0 0;
+}
+
+.more {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.more a {
+  font-weight: 700;
+  text-decoration: none;
+}

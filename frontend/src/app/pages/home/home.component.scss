@@ -1,0 +1,95 @@
+.hero {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.hero h1 {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  line-height: 1.05;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.4rem;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+
+.pane {
+  padding: 1.2rem 1.25rem 1.3rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.pane h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.pane p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.pane a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.strip-title {
+  margin: 0.35rem 0 1rem;
+  font-size: 1.5rem;
+}
+
+.chapters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.chap {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.05rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.chap span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--forest-mid);
+}
+
+.chap strong {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.chap em {
+  font-style: normal;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 800px) {
+  .split,
+  .chapters {
+    grid-template-columns: 1fr;
+  }
+}

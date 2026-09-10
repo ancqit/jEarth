@@ -1,0 +1,34 @@
+<section class="hero">
+  <p class="kicker">Visit waste-hero countries</p>
+  <h1>Copy operations, not flags.</h1>
+  <p class="lede">
+    These places are not magic. They priced residual waste, refused mixed bags, paid the people who
+    already pick, or made food waste a separate legal object. Each card lists what they did, what
+    to steal for your ward, and the caution so you do not import a bad incinerator contract with
+    the good calendar.
+  </p>
+</section>
+
+<div class="grid">
+  @for (hero of heroes; track hero.country) {
+    <article class="card hero-card">
+      <p class="kicker">{{ hero.region }}</p>
+      <h2>{{ hero.country }}</h2>
+      <p class="score">{{ hero.score }}</p>
+      <p class="headline">{{ hero.headline }}</p>
+      <h3>What they did</h3>
+      <ul>
+        @for (item of hero.whatTheyDid; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <h3>What to copy</h3>
+      <ul>
+        @for (item of hero.whatToCopy; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <aside class="caution">{{ hero.caution }}</aside>
+    </article>
+  }
+</div>
