@@ -301,15 +301,15 @@ function fruitingHint(temp: number, humidity: number): string {
   const tempOk = temp >= 16 && temp <= 28;
   const humOk = humidity >= 70;
   if (tempOk && humOk) {
-    return 'Oyster weather: cool-warm and humid enough to pin. Mist, do not bake the bag in sun.';
+    return 'Oyster weather: cool-warm and humid enough to pin. The harvest aisle should be busy.';
   }
   if (temp > 30) {
-    return 'Too hot for button mushrooms; oysters may stall. Seek shade and extra misting.';
+    return 'Too hot for button mushrooms; oysters may stall unless the room is shaded. We may unlist buttons.';
   }
   if (humidity < 55) {
-    return 'Air is dry. Fruiting wants a damp cloth tent or more misting, never a soaked bag.';
+    return 'Air is dry. Fruiting rooms need mist in the air, not a soaked crop.';
   }
-  return 'Marginal fruiting weather. Keep the bag in indirect light and watch for green mould.';
+  return 'Marginal fruiting weather. Watch the cameras for pins before you expect a full harvest list.';
 }
 
 function recyclingMaterials(tags: Record<string, string>): string {

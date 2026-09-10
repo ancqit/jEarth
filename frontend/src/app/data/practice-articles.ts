@@ -46,7 +46,7 @@ export const HOUSEHOLD_SOP: GuideArticle = {
     },
     {
       type: 'p',
-      text: 'The cheapest disposal is not generating the object. Prefer loose produce, returnable glass, refill stores, and paper where it truly recycles. Refuse decorative multilayer for snacks you can buy from a tin. A mushroom grow bag on this site is a product that eats agricultural residue; that is the opposite of a chip packet.',
+      text: 'The cheapest disposal is not generating the object. Prefer loose produce, returnable glass, refill stores, and paper where it truly recycles. Refuse decorative multilayer for snacks you can buy from a tin. Fresh mushrooms on this site are protein grown on agricultural residue; that is the opposite of a chip packet.',
     },
     {
       type: 'h2',
@@ -142,7 +142,7 @@ export const COMPOST_DEEP: GuideArticle = {
     },
     {
       type: 'p',
-      text: 'Oyster mushrooms grow on pasteurised straw, sawdust, coffee grounds, and other cellulose. That is agricultural and café waste becoming protein. It is not a way to dump mixed household wet waste into a grow bag — pathogens and salt and oil will ruin a bag. The mushroom page on this site sells bags on a controlled substrate. Your kitchen wet waste should become compost that then grows plants; the farm uses cleaner agricultural residue. Together they close a rural–urban loop.',
+      text: 'Oyster mushrooms grow on pasteurised straw, sawdust, coffee grounds, and other cellulose. That is agricultural and café waste becoming protein. Mixed household wet waste is not a farm substrate — pathogens and salt and oil will ruin a crop. The mushroom page on this site sells the harvest, grown on controlled residue you can watch on camera. Your kitchen wet waste should become compost that then grows plants. Together they close a rural–urban loop.',
     },
     {
       type: 'callout',

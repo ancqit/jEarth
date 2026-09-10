@@ -2,6 +2,7 @@
   display: grid;
   gap: 0.55rem;
   margin-bottom: 0.75rem;
+  justify-items: start;
 }
 
 .hero h1 {
@@ -106,24 +107,24 @@
   align-items: start;
 }
 
-.bags {
+.listings {
   display: grid;
   gap: 0.75rem;
 }
 
-.bag {
+.offer {
   text-align: left;
   padding: 1rem 1.05rem;
   cursor: pointer;
   color: inherit;
 }
 
-.bag.on {
+.offer.on {
   border-color: var(--forest-mid);
   box-shadow: 0 0 0 2px rgba(25, 75, 49, 0.15);
 }
 
-.bag img {
+.offer img {
   width: 100%;
   height: 8rem;
   object-fit: cover;
@@ -131,12 +132,12 @@
   margin-bottom: 0.55rem;
 }
 
-.bag h3 {
+.offer h3 {
   margin: 0.2rem 0;
   font-size: 1.15rem;
 }
 
-.bag p {
+.offer p {
   margin: 0;
   color: var(--ink-soft);
   line-height: 1.45;
@@ -237,9 +238,69 @@
   color: var(--mute);
 }
 
+.latin {
+  margin: 0.35rem 0 0.9rem;
+}
+
+.cycle {
+  margin: 0 0 1.8rem;
+}
+
+.cycle-lede {
+  margin: 0 0 0.75rem;
+}
+
+.beats {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  counter-reset: beat;
+}
+
+.beat {
+  padding: 1rem 1.05rem 1.1rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.beat-hit {
+  display: grid;
+  gap: 0.2rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.beat-hit:disabled {
+  cursor: default;
+}
+
+.beat h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.beat p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.fail {
+  color: var(--danger) !important;
+}
+
 @media (max-width: 900px) {
   .cameras,
-  .shop {
+  .shop,
+  .beats {
     grid-template-columns: 1fr;
   }
 
