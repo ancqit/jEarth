@@ -1,0 +1,31 @@
+<section class="hero">
+  <p class="kicker">How to check waste · in the street</p>
+  <h1>Find a real recycling node.</h1>
+  <p class="lede">
+    The guidebook tells you wet from dry. This page asks OpenStreetMap (Overpass API) for
+    <code>amenity=recycling</code> near you, and Open-Meteo for the air you are sorting in. No
+    Junction login. No paid key.
+  </p>
+  <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="locate()">
+    {{ loading() ? 'Querying maps…' : 'Use my location' }}
+  </button>
+  <p class="muted">{{ status() }}</p>
+</section>
+
+@if (climate(); as weather) {
+  <aside class="card climate">
+    <p class="kicker">Open-Meteo now</p>
+    <p>{{ weather.temperature }}°C · {{ weather.humidity }}% humidity · PM2.5 {{ weather.pm25 ?? 'n/a' }}</p>
+    <p>{{ weather.fruitingHint }}</p>
+  </aside>
+}
+
+<ul class="list">
+  @for (node of nodes(); track node.id) {
+    <li class="card">
+      <h2>{{ node.name }}</h2>
+      <p>{{ node.materials }}</p>
+      <a [href]="mapLink(node)" target="_blank" rel="noreferrer">OpenStreetMap pin</a>
+    </li>
+  }
+</ul>

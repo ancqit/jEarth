@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/heroes/heroes.component').then((m) => m.HeroesComponent),
   },
   {
+    path: 'nearby',
+    loadComponent: () => import('./pages/nearby/nearby.component').then((m) => m.NearbyComponent),
+  },
+  {
     path: 'mushrooms',
     loadComponent: () =>
       import('./pages/mushrooms/mushrooms.component').then((m) => m.MushroomsComponent),

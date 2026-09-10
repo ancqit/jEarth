@@ -36,4 +36,8 @@ export interface WasteHero {
   whatTheyDid: string[];
   whatToCopy: string[];
   caution: string;
+  iso2: string;
+  iso3: string;
+  queryName: string;
+  wiki: string;
 }

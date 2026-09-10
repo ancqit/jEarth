@@ -10,6 +10,23 @@
 
 <p class="note">{{ catalogNote() }}</p>
 
+@if (climate(); as weather) {
+  <aside class="card climate">
+    <p class="kicker">Open-Meteo · {{ climatePlace() }}</p>
+    <p class="yield">{{ weather.temperature }}°C · {{ weather.humidity }}% RH · rain {{ weather.precipitation }} mm</p>
+    @if (weather.pm25 != null) {
+      <p class="muted">PM2.5 {{ weather.pm25 }} µg/m³ (open burning nearby will show up here).</p>
+    }
+    <p>{{ weather.fruitingHint }}</p>
+  </aside>
+}
+
+@if (gbifCount() != null) {
+  <p class="muted gbif">
+    GBIF has {{ gbifCount() | number }} occurrence records for <em>Pleurotus ostreatus</em> — the same oyster group we sell as bags.
+  </p>
+}
+
 <section class="cameras card">
   <div class="cam-main">
     <img [src]="selectedCam().image" [alt]="selectedCam().title" />
@@ -97,3 +114,19 @@
     }
   </form>
 </section>
+
+@if (wild().length) {
+  <section class="wild">
+    <p class="kicker">iNaturalist research-grade oysters</p>
+    <h2 class="strip">Wild cousins, not the farm CCTV — Creative Commons photos from a public API.</h2>
+    <div class="wild-grid">
+      @for (shot of wild(); track shot.id) {
+        <a class="card shot" [href]="shot.page" target="_blank" rel="noreferrer">
+          <img [src]="shot.url" [alt]="shot.taxon" />
+          <strong>{{ shot.taxon }}</strong>
+          <span>{{ shot.place }} · {{ shot.observed }}</span>
+        </a>
+      }
+    </div>
+  </section>
+}

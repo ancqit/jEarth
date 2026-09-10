@@ -9,8 +9,19 @@
   <div class="cta">
     <a class="btn btn-primary" routerLink="/sort">Check waste in the lab</a>
     <a class="btn btn-ghost" routerLink="/heroes">Waste-hero countries</a>
+    <a class="btn btn-ghost" routerLink="/nearby">Recycling nearby</a>
   </div>
 </section>
+
+@if (wiki(); as page) {
+  <aside class="card wiki">
+    <p class="kicker">Wikipedia · {{ page.title }}</p>
+    <p>{{ page.extract }}</p>
+    @if (page.content_urls?.desktop?.page; as href) {
+      <a [href]="href" target="_blank" rel="noreferrer">Open Wikipedia</a>
+    }
+  </aside>
+}
 
 <ol class="toc">
   @for (article of articles; track article.slug; let i = $index) {
@@ -24,3 +35,19 @@
     </li>
   }
 </ol>
+
+@if (repos().length) {
+  <section class="oss">
+    <p class="kicker">GitHub public repos</p>
+    <h2>Codebases that already argue with mixed waste.</h2>
+    <ul>
+      @for (repo of repos(); track repo.id) {
+        <li class="card">
+          <a [href]="repo.html_url" target="_blank" rel="noreferrer">{{ repo.full_name }}</a>
+          <span>{{ repo.stargazers_count }} ★</span>
+          <p>{{ repo.description }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+}

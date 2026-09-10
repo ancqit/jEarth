@@ -19,6 +19,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'High incineration share is not automatically circular. Copy the discipline of sorting, not the idea that burning is recycling.',
+    iso2: 'JP',
+    iso3: 'JPN',
+    queryName: 'Japan',
+    wiki: 'Waste_management_in_Japan',
   },
   {
     country: 'South Korea',
@@ -38,6 +42,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Fees without service (no collection, no plant) become a tax on the poor. Build capacity first, then tighten the bag price.',
+    iso2: 'KR',
+    iso3: 'KOR',
+    queryName: 'South Korea',
+    wiki: 'Waste_management_in_South_Korea',
   },
   {
     country: 'Germany',
@@ -57,6 +65,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Exporting bales of plastic is not success. Track domestic recycling, not just collection rates.',
+    iso2: 'DE',
+    iso3: 'DEU',
+    queryName: 'Germany',
+    wiki: 'Waste_management_in_Germany',
   },
   {
     country: 'Sweden',
@@ -75,6 +87,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Imported waste for energy can hide weak prevention. Heroes still need to reduce packaging at source.',
+    iso2: 'SE',
+    iso3: 'SWE',
+    queryName: 'Sweden',
+    wiki: 'Recycling_in_Sweden',
   },
   {
     country: 'Netherlands',
@@ -92,6 +108,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Underground containers fail if they are not cleaned; smell kills participation.',
+    iso2: 'NL',
+    iso3: 'NLD',
+    queryName: 'Netherlands',
+    wiki: 'Waste_management_in_the_Netherlands',
   },
   {
     country: 'Singapore',
@@ -111,6 +131,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'High incineration can freeze recycling innovation if contracts demand tonnes of fuel. Pair with packaging reduction.',
+    iso2: 'SG',
+    iso3: 'SGP',
+    queryName: 'Singapore',
+    wiki: 'Waste_management_in_Singapore',
   },
   {
     country: 'Taiwan',
@@ -128,6 +152,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Street collection needs safe streets and labour. Do not copy the theatre without paying workers.',
+    iso2: 'TW',
+    iso3: 'TWN',
+    queryName: 'Taiwan',
+    wiki: 'Recycling_in_Taiwan',
   },
   {
     country: 'Rwanda',
@@ -145,6 +173,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'A bag ban is not a full waste system. Invest in organics and dumpsite upgrade in the same decade.',
+    iso2: 'RW',
+    iso3: 'RWA',
+    queryName: 'Rwanda',
+    wiki: 'Environment_of_Rwanda',
   },
   {
     country: 'India (pockets of excellence)',
@@ -164,6 +196,10 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Awards are not a landfill. Copy the operations manual, not the press release. Fires at dumps remain a national failure where mixed waste still arrives.',
+    iso2: 'IN',
+    iso3: 'IND',
+    queryName: 'India',
+    wiki: 'Waste_management_in_India',
   },
   {
     country: 'Costa Rica',
@@ -181,5 +217,9 @@ export const WASTE_HEROES: WasteHero[] = [
     ],
     caution:
       'Rural dumps and plastic leakage still exist. Identity helps; trucks and plants close the loop.',
+    iso2: 'CR',
+    iso3: 'CRI',
+    queryName: 'Costa Rica',
+    wiki: 'Environment_of_Costa_Rica',
   },
 ];

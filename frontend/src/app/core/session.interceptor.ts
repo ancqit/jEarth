@@ -12,6 +12,9 @@ function isApiRequest(url: string): boolean {
   if (url.startsWith(baseUrl) || (baseUrl === '/api' && url.startsWith('/api/'))) {
     return true;
   }
+  if (/^https?:\/\//i.test(url)) {
+    return false;
+  }
   return SESSION_PROTECTED_PATHS.some((segment) => url.includes(segment));
 }
 

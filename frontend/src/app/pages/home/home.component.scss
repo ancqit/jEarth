@@ -87,9 +87,55 @@
   line-height: 1.45;
 }
 
+.live-strip {
+  margin: 0 0 2.2rem;
+}
+
+.live-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.repos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.repos li {
+  padding: 0.85rem 1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.repos a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.repos span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--forest-mid);
+}
+
+.repos p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 800px) {
   .split,
-  .chapters {
+  .chapters,
+  .live-grid,
+  .repos {
     grid-template-columns: 1fr;
   }
 }

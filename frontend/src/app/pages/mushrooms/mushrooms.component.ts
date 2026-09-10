@@ -1,16 +1,18 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, of, switchMap } from 'rxjs';
 import { CatalogApi } from '../../core/catalog.api';
 import { OrdersApi } from '../../core/orders.api';
 import { resolveProductImageSource } from '../../core/product-image.util';
+import { InatPhoto, PublicApisService, WeatherNow } from '../../core/public-apis.service';
 import { SessionService } from '../../core/session.service';
 import { FALLBACK_BAGS, FARM_CAMERAS, GrowBag } from '../../data/mushrooms';
 import { Product, Shop } from '../../models/catalog.model';
 
 @Component({
   selector: 'app-mushrooms',
-  imports: [FormsModule],
+  imports: [FormsModule, DecimalPipe],
   templateUrl: './mushrooms.component.html',
   styleUrl: './mushrooms.component.scss',
 })
@@ -18,6 +20,7 @@ export class MushroomsComponent implements OnInit {
   private readonly catalog = inject(CatalogApi);
   private readonly orders = inject(OrdersApi);
   private readonly session = inject(SessionService);
+  private readonly publicApis = inject(PublicApisService);
 
   readonly cameras = FARM_CAMERAS;
   readonly activeCam = signal(this.cameras[0].id);
@@ -31,6 +34,10 @@ export class MushroomsComponent implements OnInit {
   readonly bookingMessage = signal('');
   readonly bookingError = signal('');
   readonly submitting = signal(false);
+  readonly wild = signal<InatPhoto[]>([]);
+  readonly climate = signal<WeatherNow | null>(null);
+  readonly gbifCount = signal<number | null>(null);
+  readonly climatePlace = signal('Bengaluru (default farm climate)');
 
   readonly selectedCam = computed(
     () => this.cameras.find((cam) => cam.id === this.activeCam()) ?? this.cameras[0],
@@ -51,6 +58,7 @@ export class MushroomsComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.loadPublicBiology();
     this.session
       .ensureSession()
       .pipe(
@@ -140,6 +148,24 @@ export class MushroomsComponent implements OnInit {
           );
         },
       });
+  }
+
+  private loadPublicBiology(): void {
+    this.publicApis.inatMushrooms('Pleurotus').subscribe((photos) => this.wild.set(photos));
+    this.publicApis.gbifCount('Pleurotus ostreatus').subscribe((count) => this.gbifCount.set(count));
+    const applyClimate = (lat: number, lon: number, label: string) => {
+      this.climatePlace.set(label);
+      this.publicApis.climate(lat, lon).subscribe((row) => this.climate.set(row));
+    };
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => applyClimate(pos.coords.latitude, pos.coords.longitude, 'Your location (Open-Meteo)'),
+        () => applyClimate(12.9716, 77.5946, 'Bengaluru default (Open-Meteo)'),
+        { timeout: 4000 },
+      );
+    } else {
+      applyClimate(12.9716, 77.5946, 'Bengaluru default (Open-Meteo)');
+    }
   }
 
   private toBag(product: Product, storeId: string): GrowBag {

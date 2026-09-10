@@ -5,6 +5,7 @@ Junction earth desk: a detailed **waste guidebook** and a **mushroom farm** shop
 - Angular 19 frontend (`frontend/`)
 - Visual language from [jtoday](https://github.com/ancqit/jtoday) / [junctionFrontweb](https://github.com/ancqit/junctionFrontweb) (forest, gold, paper, DM Sans)
 - Catalog and bag bookings via [junctionBack](https://github.com/ancqit/junctionBack) (`POST /session`, `GET /shops`, `GET /shops/{id}/products`, `POST /orders`)
+- Public APIs (no keys): REST Countries, World Bank CO₂, Wikipedia, Open-Meteo, iNaturalist, GBIF, OpenStreetMap Overpass, GitHub Search
 - Vercel: root `vercel.json` rewrites `/api` to `https://junctionback.onrender.com`
 
 ## Local
