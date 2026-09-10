@@ -1,0 +1,132 @@
+<section class="hero">
+  <p class="kicker">Mushroom farm</p>
+  <h1>Watch the bags. Book the flush.</h1>
+  <p class="lede">
+    Cameras sit in inoculation, pinning, harvest, and the straw yard. Yield is a range, not a
+    promise: biology plus your balcony. Booking creates a pending cash order on junctionBack so the
+    farm inbox sees it the same way junction.today orders arrive.
+  </p>
+</section>
+
+<p class="note">{{ catalogNote() }}</p>
+
+@if (climate(); as weather) {
+  <aside class="card climate">
+    <p class="kicker">Open-Meteo · {{ climatePlace() }}</p>
+    <p class="yield">{{ weather.temperature }}°C · {{ weather.humidity }}% RH · rain {{ weather.precipitation }} mm</p>
+    @if (weather.pm25 != null) {
+      <p class="muted">PM2.5 {{ weather.pm25 }} µg/m³ (open burning nearby will show up here).</p>
+    }
+    <p>{{ weather.fruitingHint }}</p>
+  </aside>
+}
+
+@if (gbifCount() != null) {
+  <p class="muted gbif">
+    GBIF has {{ gbifCount() | number }} occurrence records for <em>Pleurotus ostreatus</em> — the same oyster group we sell as bags.
+  </p>
+}
+
+<section class="cameras card">
+  <div class="cam-main">
+    <img [src]="selectedCam().image" [alt]="selectedCam().title" />
+    <p class="live"><span></span> Live bay · {{ selectedCam().bay }}</p>
+  </div>
+  <div class="cam-meta">
+    <p class="kicker">{{ selectedCam().stage }}</p>
+    <h2>{{ selectedCam().title }}</h2>
+    <p>{{ selectedCam().note }}</p>
+    <div class="thumbs">
+      @for (cam of cameras; track cam.id) {
+        <button type="button" [class.on]="cam.id === activeCam()" (click)="activeCam.set(cam.id)">
+          {{ cam.title }}
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="shop">
+  <div class="bags">
+    @for (bag of bags(); track bag.id) {
+      <button
+        type="button"
+        class="card bag"
+        [class.on]="bag.id === selectedId()"
+        (click)="selectedId.set(bag.id)"
+      >
+        @if (bag.image) {
+          <img [src]="bag.image" alt="" />
+        }
+        <p class="kicker">{{ bag.variety }}</p>
+        <h3>{{ bag.name }}</h3>
+        <p>{{ bag.description }}</p>
+        <p class="price">{{ bag.currency }} {{ bag.price }} · {{ bag.expectedYieldKg[0] }}–{{ bag.expectedYieldKg[1] }} kg</p>
+      </button>
+    }
+  </div>
+
+  <form class="card book" (submit)="$event.preventDefault(); book()">
+    <p class="kicker">Reserve bags</p>
+    <h2>{{ selectedBag().name }}</h2>
+    <p class="yield">{{ yieldText() }}</p>
+    <p class="muted">Substrate: {{ selectedBag().substrate }} · stock {{ selectedBag().stock_quantity }}</p>
+
+    <label class="field">
+      <span>Bags</span>
+      <input
+        type="number"
+        min="1"
+        [ngModel]="quantity()"
+        (ngModelChange)="setQuantity($event)"
+        name="qty"
+      />
+    </label>
+    <label class="field">
+      <span>Your name</span>
+      <input
+        type="text"
+        required
+        [ngModel]="customerName()"
+        (ngModelChange)="customerName.set($event)"
+        name="name"
+        autocomplete="name"
+      />
+    </label>
+    <label class="field">
+      <span>Email (optional)</span>
+      <input
+        type="email"
+        [ngModel]="customerEmail()"
+        (ngModelChange)="customerEmail.set($event)"
+        name="email"
+        autocomplete="email"
+      />
+    </label>
+    <button class="btn btn-primary" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Booking…' : 'Book on junctionBack' }}
+    </button>
+    @if (bookingMessage()) {
+      <p class="ok">{{ bookingMessage() }}</p>
+    }
+    @if (bookingError()) {
+      <p class="err">{{ bookingError() }}</p>
+    }
+  </form>
+</section>
+
+@if (wild().length) {
+  <section class="wild">
+    <p class="kicker">iNaturalist research-grade oysters</p>
+    <h2 class="strip">Wild cousins, not the farm CCTV — Creative Commons photos from a public API.</h2>
+    <div class="wild-grid">
+      @for (shot of wild(); track shot.id) {
+        <a class="card shot" [href]="shot.page" target="_blank" rel="noreferrer">
+          <img [src]="shot.url" [alt]="shot.taxon" />
+          <strong>{{ shot.taxon }}</strong>
+          <span>{{ shot.place }} · {{ shot.observed }}</span>
+        </a>
+      }
+    </div>
+  </section>
+}

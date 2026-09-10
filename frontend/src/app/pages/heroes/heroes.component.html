@@ -1,0 +1,71 @@
+<section class="hero">
+  <p class="kicker">Visit waste-hero countries</p>
+  <h1>Copy operations, not flags.</h1>
+  <p class="lede">
+    These places are not magic. They priced residual waste, refused mixed bags, paid the people who
+    already pick, or made food waste a separate legal object. Each card lists what they did, what
+    to steal for your ward, and the caution so you do not import a bad incinerator contract with
+    the good calendar.
+  </p>
+  <p class="muted live-note">{{ liveNote() }}</p>
+</section>
+
+<div class="grid">
+  @for (hero of heroes; track hero.country) {
+    <article class="card hero-card">
+      @if (stats(hero); as info) {
+        <div class="id-row">
+          @if (info.flag) {
+            <img class="flag" [src]="info.flag" [alt]="hero.queryName + ' flag'" />
+          }
+          <div>
+            <p class="kicker">{{ hero.region }}</p>
+            <h2>{{ hero.country }}</h2>
+          </div>
+        </div>
+        <p class="facts">
+          @if (info.capital) {
+            <span>Capital {{ info.capital }}</span>
+          }
+          @if (info.population) {
+            <span>{{ info.population | number }} people</span>
+          }
+          @if (info.co2) {
+            <span>{{ info.co2 }}</span>
+          }
+        </p>
+        @if (info.wiki) {
+          <p class="wiki">{{ info.wiki }}</p>
+        }
+        @if (info.wikiUrl || info.mapUrl) {
+          <p class="links">
+            @if (info.wikiUrl) {
+              <a [href]="info.wikiUrl" target="_blank" rel="noreferrer">Wikipedia</a>
+            }
+            @if (info.mapUrl) {
+              <a [href]="info.mapUrl" target="_blank" rel="noreferrer">Map</a>
+            }
+          </p>
+        }
+      } @else {
+        <p class="kicker">{{ hero.region }}</p>
+        <h2>{{ hero.country }}</h2>
+      }
+      <p class="score">{{ hero.score }}</p>
+      <p class="headline">{{ hero.headline }}</p>
+      <h3>What they did</h3>
+      <ul>
+        @for (item of hero.whatTheyDid; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <h3>What to copy</h3>
+      <ul>
+        @for (item of hero.whatToCopy; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <aside class="caution">{{ hero.caution }}</aside>
+    </article>
+  }
+</div>

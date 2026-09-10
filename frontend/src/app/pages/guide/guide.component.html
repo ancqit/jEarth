@@ -1,0 +1,53 @@
+<section class="hero">
+  <p class="kicker">Waste guidebook</p>
+  <h1>Read this until mixed waste looks like a spelling error.</h1>
+  <p class="lede">
+    Eight chapters, plus a sorting lab and a country room. Wet and dry are the first words; they
+    are not the whole language. Work in order if you are new. Skip to disposal if you already sort
+    and still do not know where the truck goes.
+  </p>
+  <div class="cta">
+    <a class="btn btn-primary" routerLink="/sort">Check waste in the lab</a>
+    <a class="btn btn-ghost" routerLink="/heroes">Waste-hero countries</a>
+    <a class="btn btn-ghost" routerLink="/nearby">Recycling nearby</a>
+  </div>
+</section>
+
+@if (wiki(); as page) {
+  <aside class="card wiki">
+    <p class="kicker">Wikipedia · {{ page.title }}</p>
+    <p>{{ page.extract }}</p>
+    @if (page.content_urls?.desktop?.page; as href) {
+      <a [href]="href" target="_blank" rel="noreferrer">Open Wikipedia</a>
+    }
+  </aside>
+}
+
+<ol class="toc">
+  @for (article of articles; track article.slug; let i = $index) {
+    <li class="card">
+      <span class="num">{{ i + 1 }}</span>
+      <div>
+        <p class="kicker">{{ article.chapter }} · {{ article.minutes }} min</p>
+        <h2><a [routerLink]="['/guide', article.slug]">{{ article.title }}</a></h2>
+        <p>{{ article.summary }}</p>
+      </div>
+    </li>
+  }
+</ol>
+
+@if (repos().length) {
+  <section class="oss">
+    <p class="kicker">GitHub public repos</p>
+    <h2>Codebases that already argue with mixed waste.</h2>
+    <ul>
+      @for (repo of repos(); track repo.id) {
+        <li class="card">
+          <a [href]="repo.html_url" target="_blank" rel="noreferrer">{{ repo.full_name }}</a>
+          <span>{{ repo.stargazers_count }} ★</span>
+          <p>{{ repo.description }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+}

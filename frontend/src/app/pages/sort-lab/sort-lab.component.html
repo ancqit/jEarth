@@ -1,0 +1,49 @@
+<section class="hero">
+  <p class="kicker">How to check waste</p>
+  <h1>Sorting lab</h1>
+  <p class="lede">
+    Fifteen items. No wishcycling. Pick the stream you would actually use in a honest household,
+    then read why. This is the same 10-second test as the guidebook chapter.
+  </p>
+</section>
+
+@if (done()) {
+  <div class="card result">
+    <p class="kicker">Session complete</p>
+    <h2>{{ score() }} / {{ items.length }} honest placements</h2>
+    <p>
+      Below twelve means the grey list still owns you — reread types of waste and how to check.
+      Fifteen means you can teach the building.
+    </p>
+    <button type="button" class="btn btn-primary" (click)="restart()">Run the lab again</button>
+  </div>
+} @else {
+  @if (current(); as item) {
+    <p class="progress muted">{{ index() + 1 }} / {{ items.length }} · score {{ score() }}</p>
+    <article class="card prompt">
+      <p class="kicker">{{ item.hint }}</p>
+      <h2>{{ item.name }}</h2>
+      <div class="choices">
+        @for (stream of streams; track stream.id) {
+          <button
+            type="button"
+            class="choice"
+            [class.ok]="picked() === stream.id && stream.id === item.answer"
+            [class.bad]="picked() === stream.id && stream.id !== item.answer"
+            [disabled]="!!picked()"
+            (click)="choose(stream.id)"
+          >
+            {{ stream.label }}
+          </button>
+        }
+      </div>
+      @if (picked(); as stream) {
+        <aside class="why" [class.miss]="stream !== item.answer">
+          <strong>{{ stream === item.answer ? 'Correct.' : 'Not that stream.' }}</strong>
+          <p>{{ item.why }}</p>
+          <button type="button" class="btn btn-primary" (click)="next()">Next item</button>
+        </aside>
+      }
+    </article>
+  }
+}
