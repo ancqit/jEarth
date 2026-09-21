@@ -1,0 +1,145 @@
+/* Junction reference components — BEM. Pair with tokens/junction-tokens.css */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-min);
+  padding: 0.72rem 1.2rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.button--primary {
+  background: var(--forest);
+  color: var(--surface);
+  box-shadow: var(--shadow-btn);
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--forest-mid);
+}
+
+.button--secondary {
+  background: var(--glass-strong);
+  color: var(--forest);
+  border: 1px solid var(--line-strong);
+}
+
+.button--ghost {
+  background: rgba(243, 215, 130, 0.35);
+  color: var(--forest);
+  border: 1px solid rgba(243, 215, 130, 0.65);
+}
+
+.button--disabled,
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button--map {
+  min-height: var(--apk-btn-h);
+  height: var(--apk-btn-h);
+  padding: 0 0.7rem;
+  border-radius: var(--radius-control);
+  font-size: var(--apk-type);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.field__control {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-input);
+  padding: 0.75rem 0.85rem;
+  background: var(--surface-solid);
+  color: var(--ink);
+  font: inherit;
+}
+
+.field__control:focus {
+  outline: 2px solid rgba(243, 215, 130, 0.85);
+  outline-offset: 1px;
+  border-color: var(--forest-mid);
+}
+
+.field__error {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--danger);
+}
+
+.field--invalid .field__control {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.card {
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--forest-mid);
+}
+
+.wordmark__primary {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--ink);
+}
+
+.wordmark__secondary {
+  margin: 0;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}

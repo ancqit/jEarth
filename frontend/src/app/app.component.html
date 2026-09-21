@@ -8,6 +8,7 @@
   </a>
   <nav>
     <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Earth</a>
+    <a routerLink="/style" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Style</a>
     <a routerLink="/guide" routerLinkActive="on">Waste guide</a>
     <a routerLink="/sort" routerLinkActive="on">Check waste</a>
     <a routerLink="/heroes" routerLinkActive="on">Heroes</a>
@@ -16,9 +17,13 @@
   </nav>
   <a class="today" href="https://junction.today" target="_blank" rel="noreferrer">junction.today</a>
 </header>
-<main>
+<main [class.main--style]="styleBookOpen()">
   <router-outlet />
 </main>
-<footer class="foot">
-  <p>A Junction earth desk. Style from junction.today / junctionFrontweb. Catalog via junctionBack. Live layers: REST Countries, World Bank, Wikipedia, Open-Meteo, iNaturalist, GBIF, Overpass, GitHub.</p>
-</footer>
+@if (!styleBookOpen()) {
+  <footer class="foot">
+    <p>A Junction earth desk. Style from junction.today / junctionFrontweb. Catalog via junctionBack. Live layers: REST Countries, World Bank, Wikipedia, Open-Meteo, iNaturalist, GBIF, Overpass, GitHub.</p>
+    <p class="copyright">© {{ year }} Sunskriti Data Management Company</p>
+  </footer>
+}
+

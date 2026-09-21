@@ -1,6 +1,6 @@
 # jEarth
 
-Junction earth desk: a detailed **waste guidebook** and a **mushroom farm** shop.
+Junction earth desk: a detailed **waste guidebook**, a **mushroom farm** shop, and the **Junction style guide**.
 
 - Angular 19 frontend (`frontend/`)
 - Visual language from [jtoday](https://github.com/ancqit/jtoday) / [junctionFrontweb](https://github.com/ancqit/junctionFrontweb) (forest, gold, paper, DM Sans)
@@ -17,6 +17,12 @@ npm start
 ```
 
 Proxy: `/api` → junctionBack.
+
+## Style guide (for humans + agents)
+
+- Site: **Style** in the top nav opens the full 11-section brand book under `/style` (still on jEarth — Earth / Guide / etc. stay one click away). Deep links: `/style#color`, `#type`, `#components`, `#agents`
+- Standalone mirror: `/brand-book/index.html` · prose: `/brand-book/JUNCTION-BRAND-BOOK.md` · raw: `/style.md`
+- Covers principles, tokens, Get/map controls, branding builds, agent checklist
 
 ## Guidebook
 

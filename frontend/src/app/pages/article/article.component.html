@@ -77,10 +77,10 @@
     <nav class="more">
       <p class="kicker">Keep going</p>
       @for (next of others(); track next.slug) {
-        <a [routerLink]="['/guide', next.slug]">{{ next.title }}</a>
+        <a [routerLink]="[chapterBase(), next.slug]">{{ next.title }}</a>
       }
     </nav>
   </article>
 } @else {
-  <p>That chapter is not in the guidebook. <a routerLink="/guide">Return to the index.</a></p>
+  <p>That chapter is missing. <a [routerLink]="indexLink()">{{ indexLabel() }}</a></p>
 }

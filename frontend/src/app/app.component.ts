@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,22 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent {
+  readonly year = new Date().getFullYear();
+
+  private readonly router = inject(Router);
+  private readonly url = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => e.urlAfterRedirects),
+      startWith(this.router.url),
+    ),
+    { initialValue: this.router.url },
+  );
+
+  /** Style book fills the viewport under the site header — hide site footer for room. */
+  readonly styleBookOpen = computed(() => {
+    const path = (this.url() || '').split('?')[0].split('#')[0];
+    return path === '/style' || path === '/style/';
+  });
+}
