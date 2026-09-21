@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-/**
- * Live Components chapter — mirrors brand book #components
- * (preview/index.html#components): buttons, form, card, footer, map chrome.
- */
+/** Legacy path — send visitors to the brand book Components section. */
 @Component({
   selector: 'app-style-components',
-  imports: [RouterLink],
-  templateUrl: './style-components.component.html',
-  styleUrl: './style-components.component.scss',
+  template: '',
 })
-export class StyleComponentsComponent {
-  readonly year = new Date().getFullYear();
+export class StyleComponentsComponent implements OnInit {
+  private readonly router = inject(Router);
+
+  ngOnInit(): void {
+    void this.router.navigateByUrl('/style#components');
+  }
 }

@@ -1,0 +1,473 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Junction Brand Book â€” Design Guide</title>
+    <meta name="theme-color" content="#194b31" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="components.css" />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-ui);
+        font-size: var(--text-base);
+        line-height: var(--leading-body);
+        color: var(--ink);
+        background:
+          radial-gradient(ellipse 90% 55% at 8% -10%, rgba(243, 215, 130, 0.35), transparent 55%),
+          radial-gradient(ellipse 70% 45% at 100% 0%, rgba(25, 75, 49, 0.1), transparent 50%),
+          linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+        background-attachment: fixed;
+      }
+      a {
+        color: var(--forest-mid);
+      }
+      .shell {
+        display: grid;
+        grid-template-columns: 15.5rem minmax(0, 1fr);
+        min-height: 100vh;
+      }
+      .nav {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 1.25rem 1rem 2rem;
+        border-right: 1px solid var(--line);
+        background: rgba(255, 253, 248, 0.88);
+        overflow: auto;
+      }
+      .nav a {
+        display: block;
+        padding: 0.35rem 0.5rem;
+        border-radius: 0.4rem;
+        color: var(--ink-soft);
+        text-decoration: none;
+        font-size: var(--text-sm);
+        font-weight: 600;
+      }
+      .nav a:hover,
+      .nav a:focus-visible {
+        background: rgba(243, 215, 130, 0.35);
+        color: var(--forest);
+      }
+      .main {
+        padding: 2rem var(--page-pad-x) 4rem;
+        max-width: 58rem;
+      }
+      h1,
+      h2,
+      .display {
+        font-family: var(--font-display);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        line-height: var(--leading-tight);
+      }
+      h1 {
+        font-size: var(--text-display);
+        margin: 0.4rem 0 0.75rem;
+      }
+      h2 {
+        font-size: var(--text-2xl);
+        margin: 2.75rem 0 0.85rem;
+      }
+      .lede {
+        max-width: 40rem;
+        color: var(--ink-soft);
+        font-size: 1.05rem;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0 1.5rem;
+      }
+      .chip {
+        font-size: var(--text-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.55rem;
+        border-radius: var(--radius-pill);
+        background: var(--gold-soft);
+        color: var(--forest-deep);
+      }
+      .grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+      .swatches {
+        grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      }
+      .swatch {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+      .swatch__chip {
+        height: 4.25rem;
+      }
+      .swatch__meta {
+        padding: 0.65rem 0.7rem 0.8rem;
+      }
+      .swatch__meta strong {
+        display: block;
+        font-size: var(--text-sm);
+      }
+      .swatch__meta span {
+        display: block;
+        font-size: 0.68rem;
+        color: var(--mute);
+        font-variant-numeric: tabular-nums;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+        background: var(--surface);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 0.65rem 0.75rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--mute);
+        background: rgba(243, 215, 130, 0.22);
+      }
+      .type-row {
+        padding: 0.85rem 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .type-row small {
+        display: block;
+        color: var(--mute);
+        font-size: var(--text-xs);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-family: var(--font-ui);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      .demo-card {
+        padding: 1.1rem 1.15rem;
+      }
+      .do,
+      .dont {
+        padding: 0.9rem 1rem;
+      }
+      .do {
+        border-left: 4px solid var(--forest);
+      }
+      .dont {
+        border-left: 4px solid var(--danger);
+      }
+      .map-demo {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--apk-fab);
+        height: var(--apk-fab);
+        border-radius: var(--radius-control);
+        background: var(--gold);
+        color: var(--forest);
+        font-weight: 800;
+        font-size: 0.95rem;
+        box-shadow: var(--shadow-control);
+      }
+      .cover-mark {
+        width: 4rem;
+        height: 4rem;
+      }
+      .lockup {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 1.25rem 0;
+      }
+      .warn {
+        padding: 0.9rem 1rem;
+        background: var(--danger-bg);
+        border: 1px solid rgba(146, 64, 14, 0.25);
+        border-radius: var(--radius);
+        color: var(--danger);
+      }
+      code {
+        font-size: 0.85em;
+        background: rgba(25, 75, 49, 0.08);
+        padding: 0.05em 0.35em;
+        border-radius: 0.3rem;
+      }
+      @media (max-width: 720px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+        .nav {
+          position: relative;
+          height: auto;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.15rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav class="nav" aria-label="Brand book">
+        <p class="kicker">Junction Â· 1.0</p>
+        <a href="#intro">01 Introduction</a>
+        <a href="#identity">02 Identity</a>
+        <a href="#color">03 Color</a>
+        <a href="#type">04 Typography</a>
+        <a href="#components">05 Components</a>
+        <a href="#layout">06 Layout</a>
+        <a href="#content">07 Content</a>
+        <a href="#platforms">08 Platforms</a>
+        <a href="#code">09 Code</a>
+        <a href="#gov">10 Governance</a>
+        <a href="#agents">11 Agents</a>
+      </nav>
+      <main class="main">
+        <p class="kicker">Brand book &amp; design guide</p>
+        <div class="lockup">
+          <img class="cover-mark" src="logo.svg" alt="Junction mark" />
+          <div>
+            <p class="wordmark__primary">Junction</p>
+            <p class="wordmark__secondary">Forest Â· Gold Â· Paper</p>
+          </div>
+        </div>
+        <h1 class="display">One system. Five jobs.</h1>
+        <p class="lede">
+          Xerox-clear, IBM-modular, Google-accessible. Tokens below are copied from production CSS on
+          junction.today, junction.website, junction.blog, junction.monster, and junction.earth â€” not from a
+          placeholder palette.
+        </p>
+        <div class="meta">
+          <span class="chip">DM Sans + Georgia</span>
+          <span class="chip">#194b31 forest</span>
+          <span class="chip">#f3d782 gold</span>
+          <span class="chip">480 / 720 / 1024</span>
+        </div>
+
+        <section id="intro">
+          <h2>1. Introduction</h2>
+          <p><strong>Mission.</strong> Junction connects commerce, community, pledges, and sustainability into one ecosystem.</p>
+          <p><strong>Vision.</strong> A unified platform where trust, responsibility, and innovation drive user experience.</p>
+          <p><strong>Philosophy.</strong> One job per control. No decoration for its own sake. Platforms differ in voice, not in hue.</p>
+        </section>
+
+        <section id="identity">
+          <h2>2. Brand identity</h2>
+          <p>Core values: Trust, responsibility, community, sustainability. Tone: clear, approachable, inclusive, slightly technical.</p>
+          <div class="lockup card demo-card">
+            <img src="logo.svg" width="64" height="64" alt="" />
+            <div>
+              <p class="wordmark__primary">Junction</p>
+              <p class="wordmark__secondary">Today Â· Website Â· Blog Â· Monster Â· Earth</p>
+            </div>
+          </div>
+          <div class="grid" style="grid-template-columns: 1fr 1fr">
+            <article class="card do">
+              <p class="kicker">Do</p>
+              <p>Keep gold field + forest J. Clear space. Paper or forest backgrounds. Favicons from <code>branding/</code>.</p>
+            </article>
+            <article class="card dont">
+              <p class="kicker">Donâ€™t</p>
+              <p>Distort the mark, recolor the J, use Inter/Helvetica, busy photos, or the Angular default favicon.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="color">
+          <h2>3. Color system</h2>
+          <p class="warn">
+            Rejected: per-platform blue / orange / crimson / teal tables. All five sites already share forest, gold, and paper.
+          </p>
+          <div class="grid swatches" style="margin-top: 1rem">
+            <article class="swatch"><div class="swatch__chip" style="background:#194b31"></div><div class="swatch__meta"><strong>Forest</strong><span>#194b31 Â· 25 75 49</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#17633e"></div><div class="swatch__meta"><strong>Forest mid</strong><span>#17633e Â· 23 99 62</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#1f7a4c"></div><div class="swatch__meta"><strong>Forest bright</strong><span>#1f7a4c Â· 31 122 76</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#103d29"></div><div class="swatch__meta"><strong>Forest deep</strong><span>#103d29 Â· 16 61 41</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#f3d782"></div><div class="swatch__meta"><strong>Gold</strong><span>#f3d782 Â· 243 215 130</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#f7e9b8"></div><div class="swatch__meta"><strong>Gold soft</strong><span>#f7e9b8 Â· 247 233 184</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#d4b75e"></div><div class="swatch__meta"><strong>Gold deep</strong><span>#d4b75e Â· 212 183 94</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#8a6f1f"></div><div class="swatch__meta"><strong>Gold ink</strong><span>#8a6f1f Â· 138 111 31</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#f4f0e6"></div><div class="swatch__meta"><strong>Paper</strong><span>#f4f0e6 Â· 244 240 230</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#ebe4d4"></div><div class="swatch__meta"><strong>Paper deep</strong><span>#ebe4d4 Â· 235 228 212</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#fffdf8"></div><div class="swatch__meta"><strong>Surface</strong><span>#fffdf8 Â· 255 253 248</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#0f1f17"></div><div class="swatch__meta"><strong>Ink</strong><span>#0f1f17 Â· 15 31 23</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#3d5248"></div><div class="swatch__meta"><strong>Ink soft</strong><span>#3d5248 Â· 61 82 72</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#6b7c72"></div><div class="swatch__meta"><strong>Mute</strong><span>#6b7c72 Â· 107 124 114</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#92400e"></div><div class="swatch__meta"><strong>Danger</strong><span>#92400e Â· 146 64 14</span></div></article>
+            <article class="swatch"><div class="swatch__chip" style="background:#f5f3ee"></div><div class="swatch__meta"><strong>Paper (website)</strong><span>#f5f3ee shell only</span></div></article>
+          </div>
+        </section>
+
+        <section id="type">
+          <h2>4. Typography</h2>
+          <div class="type-row">
+            <small>Display Â· Georgia 500 Â· --text-display</small>
+            <p class="display" style="font-size: var(--text-display); margin: 0.2rem 0">Neighbourhood shops, open now.</p>
+          </div>
+          <div class="type-row">
+            <small>H2 Â· Georgia Â· --text-2xl</small>
+            <h2 style="margin: 0.2rem 0">Pledge with a clear next step.</h2>
+          </div>
+          <div class="type-row">
+            <small>Body Â· DM Sans regular Â· --text-base Â· leading 1.5</small>
+            <p style="margin: 0.2rem 0">Junction design is simple, consistent, and human-centered. Prefer Get and Send over file jargon.</p>
+          </div>
+          <div class="type-row">
+            <small>Kicker Â· DM Sans 700 Â· 0.72rem Â· 0.12em</small>
+            <p class="kicker">Earth desk</p>
+          </div>
+          <div class="type-row">
+            <small>Caption Â· --text-xs Â· mute</small>
+            <p style="margin: 0.2rem 0; font-size: var(--text-xs); color: var(--mute)">Canonical tokens. Do not introduce Inter.</p>
+          </div>
+        </section>
+
+        <section id="components">
+          <h2>5. Components</h2>
+          <p class="kicker">Buttons</p>
+          <div class="row">
+            <button class="button button--primary" type="button">Primary</button>
+            <button class="button button--secondary" type="button">Secondary</button>
+            <button class="button button--ghost" type="button">Ghost</button>
+            <button class="button button--primary" type="button" disabled>Disabled</button>
+            <button class="button button--primary button--map" type="button">Get</button>
+            <span class="map-demo" aria-hidden="true">J</span>
+          </div>
+          <p class="kicker">Form</p>
+          <div class="card demo-card" style="max-width: 22rem; display: grid; gap: 0.85rem">
+            <label class="field">
+              <span class="field__label">Shop name</span>
+              <input class="field__control" value="Sanskriti Stores" />
+            </label>
+            <label class="field field--invalid">
+              <span class="field__label">Phone</span>
+              <input class="field__control" value="00" />
+              <p class="field__error">Enter a valid phone number.</p>
+            </label>
+          </div>
+          <p class="kicker" style="margin-top: 1.25rem">Card</p>
+          <article class="card demo-card" style="max-width: 22rem">
+            <p class="kicker">Today</p>
+            <h3 class="card__title">Open shops near you</h3>
+            <p class="muted" style="color: var(--mute); margin: 0.4rem 0 0">Map-first commerce. Forest actions, gold mark.</p>
+          </article>
+          <p class="kicker" style="margin-top: 1.25rem">Footer</p>
+          <footer class="card demo-card" style="max-width: 22rem; padding: 0.75rem 1rem; text-align: center">
+            <p style="margin: 0; font-size: var(--text-xs); font-weight: 400; color: var(--mute); letter-spacing: 0.02em">
+              Â© 2026 Sunskriti Data Management Company
+            </p>
+          </footer>
+          <p style="margin-top: 0.65rem; color: var(--mute); font-size: var(--text-xs)">
+            Caption mute Â· <code>--text-xs</code> Â· page pad + safe-area Â· fixed or flex footer on phone (not a corner chip).
+          </p>
+          <p style="margin-top: 1rem">Map chrome: type 0.68rem, height 1.85rem, FAB 2rem, radius 0.55rem. Hide phone-install UI above 720px. Drawers closed by default.</p>
+        </section>
+
+        <section id="layout">
+          <h2>6. Layout &amp; spacing</h2>
+          <table>
+            <thead>
+              <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Breakpoints</td><td>480 / 720 / 1024</td><td>Not 768</td></tr>
+              <tr><td>--space-1 â€¦ 6</td><td>0.25â€“1.5rem</td><td>4px / 8px grid</td></tr>
+              <tr><td>--page-pad-x</td><td>clamp(0.75rem, 2.5vw, 1.5rem)</td><td>Page gutter</td></tr>
+              <tr><td>--tap-min</td><td>2.75rem</td><td>Page controls</td></tr>
+              <tr><td>--radius</td><td>0.9rem</td><td>Cards</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="content">
+          <h2>7. Content guidelines</h2>
+          <p>Short, active, inclusive. Errors in plain language. Never APK/IPA in consumer copy unless asked.</p>
+          <table>
+            <thead><tr><th>Surface</th><th>Tone</th></tr></thead>
+            <tbody>
+              <tr><td>Shop (today)</td><td>Trustworthy, transactional</td></tr>
+              <tr><td>Website</td><td>Professional, precise</td></tr>
+              <tr><td>Blog</td><td>Empathetic, conversational</td></tr>
+              <tr><td>Monster</td><td>Bold, activist</td></tr>
+              <tr><td>Earth</td><td>Calm, eco-centric</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="platforms">
+          <h2>8. Platform identity</h2>
+          <table>
+            <thead><tr><th>Platform</th><th>Theme</th><th>Cue</th></tr></thead>
+            <tbody>
+              <tr><td>junction.today</td><td>Commerce &amp; trust</td><td>Map + gold FAB</td></tr>
+              <tr><td>junction.website</td><td>Professional</td><td>Georgia login, paper #f5f3ee</td></tr>
+              <tr><td>junction.blog</td><td>Empathy &amp; voice</td><td>Editorial Georgia</td></tr>
+              <tr><td>junction.monster</td><td>Bold pledges</td><td>--gold-ink emphasis</td></tr>
+              <tr><td>junction.earth</td><td>Sustainability</td><td>Guidebook; hosts /style</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="code">
+          <h2>9. Code standards</h2>
+          <p>CSS variables on <code>:root</code>. BEM for new shared classes. Angular first. Light color-scheme. Localize without baking English widths.</p>
+          <pre class="card demo-card" style="overflow:auto"><code>:root {
+  --forest: #194b31;
+  --gold: #f3d782;
+  --paper: #f4f0e6;
+  --font-ui: 'DM Sans', 'Segoe UI', sans-serif;
+}</code></pre>
+        </section>
+
+        <section id="gov">
+          <h2>10. Governance</h2>
+          <p>New components appear here first, then in the host app. Hex changes to forest/gold/paper need product sign-off. Book version 1.0.</p>
+        </section>
+
+        <section id="agents">
+          <h2>11. Agents &amp; AI</h2>
+          <p>Helpful, clear, non-biased. Same palette. Always mark AI-generated text. No purple copilot UI.</p>
+          <ul>
+            <li>Tokens match forest / gold / paper / DM Sans</li>
+            <li>Phone-install UI hidden above 720px</li>
+            <li>Favicons from branding sync</li>
+            <li>Drawers: closed default + dismiss rules</li>
+          </ul>
+          <p>Give the next agent <code>AGENT-PR-BRIEF.md</code> to publish this page at jEarth <code>/style</code>.</p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

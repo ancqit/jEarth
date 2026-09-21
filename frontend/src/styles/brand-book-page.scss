@@ -1,0 +1,294 @@
+/* Brand book page layout — pairs with junction-tokens.css + junction-components.css */
+.brand-book {
+  display: grid;
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+  min-height: 70vh;
+  margin: -0.25rem -0.25rem 0;
+}
+
+.brand-book__nav {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  padding: 1.25rem 1rem 2rem;
+  border-right: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.88);
+  overflow: auto;
+}
+
+.brand-book__nav a {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.4rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: var(--text-sm, 0.75rem);
+  font-weight: 600;
+}
+
+.brand-book__nav a:hover,
+.brand-book__nav a:focus-visible {
+  background: rgba(243, 215, 130, 0.35);
+  color: var(--forest);
+}
+
+.brand-book__nav .chapters {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.brand-book__main {
+  padding: 1.5rem var(--page-pad-x, 1rem) 3rem;
+  max-width: 58rem;
+}
+
+.brand-book__main h1.display,
+.brand-book .display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: var(--leading-tight, 1.2);
+  font-size: var(--text-display, clamp(1.5rem, 1.15rem + 2vw, 2.25rem));
+  margin: 0.4rem 0 0.75rem;
+}
+
+.brand-book__main h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-size: var(--text-2xl, clamp(1.35rem, 1.1rem + 1.2vw, 1.75rem));
+  margin: 2.75rem 0 0.85rem;
+}
+
+.brand-book .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.brand-book .chip {
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gold-soft, #f7e9b8);
+  color: var(--forest-deep, #103d29);
+}
+
+.brand-book .grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.brand-book .swatches {
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+}
+
+.brand-book .swatch {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-solid, #fffdf8);
+  box-shadow: var(--shadow);
+}
+
+.brand-book .swatch__chip {
+  height: 4.25rem;
+}
+
+.brand-book .swatch__meta {
+  padding: 0.65rem 0.7rem 0.8rem;
+}
+
+.brand-book .swatch__meta strong {
+  display: block;
+  font-size: var(--text-sm, 0.75rem);
+}
+
+.brand-book .swatch__meta span {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--mute);
+  font-variant-numeric: tabular-nums;
+}
+
+.brand-book table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm, 0.75rem);
+  background: var(--surface-solid, #fffdf8);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.brand-book th,
+.brand-book td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.brand-book th {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+  background: rgba(243, 215, 130, 0.22);
+}
+
+.brand-book .type-row {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-book .type-row small {
+  display: block;
+  color: var(--mute);
+  font-size: var(--text-xs, 0.6875rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--font-ui);
+}
+
+.brand-book .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.brand-book .demo-card {
+  padding: 1.1rem 1.15rem;
+}
+
+.brand-book .do,
+.brand-book .dont {
+  padding: 0.9rem 1rem;
+}
+
+.brand-book .do {
+  border-left: 4px solid var(--forest);
+}
+
+.brand-book .dont {
+  border-left: 4px solid var(--danger);
+}
+
+.brand-book .map-demo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--apk-fab, 2rem);
+  height: var(--apk-fab, 2rem);
+  border-radius: var(--radius-control, 0.55rem);
+  background: var(--gold);
+  color: var(--forest);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-control, 0 8px 18px rgba(15, 23, 42, 0.16));
+}
+
+.brand-book .cover-mark {
+  width: 4rem;
+  height: 4rem;
+}
+
+.brand-book .lockup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1.25rem 0;
+}
+
+.brand-book .warn {
+  padding: 0.9rem 1rem;
+  background: var(--danger-bg);
+  border: 1px solid rgba(146, 64, 14, 0.25);
+  border-radius: var(--radius);
+  color: var(--danger);
+}
+
+.brand-book code {
+  font-size: 0.85em;
+  background: rgba(25, 75, 49, 0.08);
+  padding: 0.05em 0.35em;
+  border-radius: 0.3rem;
+}
+
+.brand-book .wordmark__primary {
+  margin: 0;
+  font-size: var(--text-lg, 1.0625rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.brand-book .wordmark__secondary {
+  margin: 0;
+  font-size: var(--text-xs, 0.6875rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.brand-book .card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.brand-book .field__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.brand-book .field__control {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-input, 0.75rem);
+  padding: 0.75rem 0.85rem;
+  background: var(--surface-solid);
+  color: var(--ink);
+  font: inherit;
+}
+
+.brand-book .field--invalid .field__control {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.brand-book .field__error {
+  margin: 0;
+  font-size: var(--text-sm, 0.75rem);
+  color: var(--danger);
+}
+
+@media (max-width: 720px) {
+  .brand-book {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-book__nav {
+    position: relative;
+    max-height: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
