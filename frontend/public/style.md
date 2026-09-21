@@ -2,10 +2,11 @@
 
 Canonical visual brand book (11 sections, same as local preview):
 
-- **Live:** `/style` → `/brand-book/index.html` (hashes: `#intro` … `#agents`)
+- **Live:** `/style` embeds the full brand book under the jEarth Style nav (site header stays; Color / Type / Components / Agents quick links)
 - **Color:** `/style#color` — 16 swatches + token table (HEX / RGB / Use) + page wash + forbidden list
 - **Typography:** `/style#type` — specimens + full type-scale table (Caption → Login display)
 - **Agents:** `/style#agents`
+- **Standalone:** `/brand-book/index.html`
 - **Prose book:** `/brand-book/JUNCTION-BRAND-BOOK.md`
 - **Machine mirror:** `/style.md` (this file)
 

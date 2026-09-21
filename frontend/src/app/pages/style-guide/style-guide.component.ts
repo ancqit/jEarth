@@ -1,32 +1,37 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 /**
- * `/style` is the visual brand book (11 sections). On Vercel a rewrite serves
- * `/brand-book/index.html`; this component is the local/fallback redirect so
- * hashes like `#color`, `#type`, `#agents` land on the same page as
- * http://127.0.0.1:8765/preview/index.html.
+ * Full brand book (11 sections) embedded under jEarth Style —
+ * same content as /brand-book/index.html and the local preview,
+ * kept inside the site chrome so Style stays one click from Earth / Guide / etc.
  */
 @Component({
   selector: 'app-style-guide',
-  template: `<p class="lede">Opening the Junction brand book…</p>`,
-  styles: [
-    `
-      .lede {
-        margin: 2rem 0;
-        color: var(--mute, #6b7c72);
-      }
-    `,
-  ],
+  imports: [RouterLink],
+  templateUrl: './style-guide.component.html',
+  styleUrl: './style-guide.component.scss',
 })
 export class StyleGuideComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly sanitizer = inject(DomSanitizer);
+
+  readonly frameUrl = signal<SafeResourceUrl>(
+    this.sanitizer.bypassSecurityTrustResourceUrl('/brand-book/index.html'),
+  );
 
   ngOnInit(): void {
-    const fragment = this.route.snapshot.fragment;
-    const target = fragment
-      ? `/brand-book/index.html#${fragment}`
-      : '/brand-book/index.html';
-    window.location.replace(target);
+    const apply = (fragment: string | null) => {
+      // Cache-bust so hash navigations reload the iframe section.
+      const stamp = Date.now();
+      const href = fragment
+        ? `/brand-book/index.html?v=${stamp}#${fragment}`
+        : `/brand-book/index.html?v=${stamp}`;
+      this.frameUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(href));
+    };
+
+    apply(this.route.snapshot.fragment);
+    this.route.fragment.subscribe((fragment) => apply(fragment));
   }
 }

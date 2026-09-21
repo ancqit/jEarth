@@ -97,6 +97,13 @@ main {
   flex: 1;
 }
 
+main.main--style {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
 .foot {
   width: min(72rem, calc(100% - 2rem));
   margin: 0 auto;
