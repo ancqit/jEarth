@@ -1,11 +1,13 @@
 <section class="hero">
   <p class="kicker">Mushroom farm</p>
-  <h1>Watch the bags. Book the flush.</h1>
+  <h1>Watch them grow. Book the harvest.</h1>
   <p class="lede">
-    Cameras sit in inoculation, pinning, harvest, and the straw yard. Yield is a range, not a
-    promise: biology plus your balcony. Booking creates a pending cash order on junctionBack so the
-    farm inbox sees it the same way junction.today orders arrive.
+    Cameras sit in inoculation, pinning, harvest, and the straw yard so you can see the crop before
+    it is picked. We sell the mushrooms — weighed packs from this morning’s flush — not grow kits.
+    Booking creates a pending cash order on junctionBack so the farm inbox sees it the same way
+    junction.today orders arrive.
   </p>
+  <a class="btn btn-ghost" routerLink="/guide/mushroom-growing-cycle">Full cycle in the guidebook</a>
 </section>
 
 <p class="note">{{ catalogNote() }}</p>
@@ -23,7 +25,7 @@
 
 @if (gbifCount() != null) {
   <p class="muted gbif">
-    GBIF has {{ gbifCount() | number }} occurrence records for <em>Pleurotus ostreatus</em> — the same oyster group we sell as bags.
+    GBIF has {{ gbifCount() | number }} occurrence records for <em>Pleurotus ostreatus</em> — the same oyster we pack as food.
   </p>
 }
 
@@ -46,34 +48,70 @@
   </div>
 </section>
 
+<section class="cycle">
+  <p class="kicker">Growing cycle</p>
+  <h2 class="strip">Straw → spawn run → pins → fruit → pack → compost.</h2>
+  <p class="lede cycle-lede">
+    {{ selectedCycle().summary }} {{ selectedCycle().totalDays }}. {{ selectedCycle().flushes }}.
+    Tap a stage with a camera mark to jump the live bay.
+  </p>
+  <div class="thumbs">
+    @for (cycle of cycles; track cycle.id) {
+      <button type="button" [class.on]="cycle.id === cycleId()" (click)="cycleId.set(cycle.id)">
+        {{ cycle.name }}
+      </button>
+    }
+  </div>
+  <p class="muted latin"><em>{{ selectedCycle().latin }}</em></p>
+  <ol class="beats">
+    @for (stage of selectedCycle().stages; track stage.id) {
+      <li class="card beat">
+        <button
+          type="button"
+          class="beat-hit"
+          [disabled]="!stage.cameraId"
+          (click)="openStageCamera(stage.cameraId)"
+        >
+          <span class="kicker">{{ stage.dayLabel }}</span>
+          <h3>{{ stage.title }}</h3>
+        </button>
+        <p><strong>See.</strong> {{ stage.whatYouSee }}</p>
+        <p><strong>Farm.</strong> {{ stage.farmDoes }}</p>
+        <p><strong>Climate.</strong> {{ stage.climate }}</p>
+        <p class="fail"><strong>Fail.</strong> {{ stage.fail }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
 <section class="shop">
-  <div class="bags">
-    @for (bag of bags(); track bag.id) {
+  <div class="listings">
+    @for (offer of offers(); track offer.id) {
       <button
         type="button"
-        class="card bag"
-        [class.on]="bag.id === selectedId()"
-        (click)="selectedId.set(bag.id)"
+        class="card offer"
+        [class.on]="offer.id === selectedId()"
+        (click)="selectedId.set(offer.id)"
       >
-        @if (bag.image) {
-          <img [src]="bag.image" alt="" />
+        @if (offer.image) {
+          <img [src]="offer.image" alt="" />
         }
-        <p class="kicker">{{ bag.variety }}</p>
-        <h3>{{ bag.name }}</h3>
-        <p>{{ bag.description }}</p>
-        <p class="price">{{ bag.currency }} {{ bag.price }} · {{ bag.expectedYieldKg[0] }}–{{ bag.expectedYieldKg[1] }} kg</p>
+        <p class="kicker">{{ offer.variety }}</p>
+        <h3>{{ offer.name }}</h3>
+        <p>{{ offer.description }}</p>
+        <p class="price">{{ offer.currency }} {{ offer.price }} · {{ offer.packGrams }} g pack</p>
       </button>
     }
   </div>
 
   <form class="card book" (submit)="$event.preventDefault(); book()">
-    <p class="kicker">Reserve bags</p>
-    <h2>{{ selectedBag().name }}</h2>
+    <p class="kicker">Reserve mushrooms</p>
+    <h2>{{ selectedOffer().name }}</h2>
     <p class="yield">{{ yieldText() }}</p>
-    <p class="muted">Substrate: {{ selectedBag().substrate }} · stock {{ selectedBag().stock_quantity }}</p>
+    <p class="muted">Grown on {{ selectedOffer().grownOn }} · stock {{ selectedOffer().stock_quantity }} packs</p>
 
     <label class="field">
-      <span>Bags</span>
+      <span>Packs</span>
       <input
         type="number"
         min="1"
@@ -104,7 +142,7 @@
       />
     </label>
     <button class="btn btn-primary" type="submit" [disabled]="submitting()">
-      {{ submitting() ? 'Booking…' : 'Book on junctionBack' }}
+      {{ submitting() ? 'Booking…' : 'Book harvest on junctionBack' }}
     </button>
     @if (bookingMessage()) {
       <p class="ok">{{ bookingMessage() }}</p>
@@ -118,7 +156,7 @@
 @if (wild().length) {
   <section class="wild">
     <p class="kicker">iNaturalist research-grade oysters</p>
-    <h2 class="strip">Wild cousins, not the farm CCTV — Creative Commons photos from a public API.</h2>
+    <h2 class="strip">Wild cousins, not tonight’s crate — Creative Commons photos from a public API.</h2>
     <div class="wild-grid">
       @for (shot of wild(); track shot.id) {
         <a class="card shot" [href]="shot.page" target="_blank" rel="noreferrer">

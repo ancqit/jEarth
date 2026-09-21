@@ -4,7 +4,7 @@ Junction earth desk: a detailed **waste guidebook**, a **mushroom farm** shop, a
 
 - Angular 19 frontend (`frontend/`)
 - Visual language from [jtoday](https://github.com/ancqit/jtoday) / [junctionFrontweb](https://github.com/ancqit/junctionFrontweb) (forest, gold, paper, DM Sans)
-- Catalog and bag bookings via [junctionBack](https://github.com/ancqit/junctionBack) (`POST /session`, `GET /shops`, `GET /shops/{id}/products`, `POST /orders`)
+- Harvest bookings via [junctionBack](https://github.com/ancqit/junctionBack) (`POST /session`, `GET /shops`, `GET /shops/{id}/products`, `POST /orders`)
 - Public APIs (no keys): REST Countries, World Bank CO₂, Wikipedia, Open-Meteo, iNaturalist, GBIF, OpenStreetMap Overpass, GitHub Search
 - Vercel: `vercel.json` at the repo root **and** in `frontend/`. Install/build detect whether the working directory is the git root or `frontend` (Vercel Root Directory). Do not also force `--prefix frontend` when Root Directory is already `frontend`.
 
@@ -30,4 +30,4 @@ Proxy: `/api` → junctionBack.
 
 ## Mushrooms
 
-`/mushrooms` — bay cameras, yield ranges, book bags as junctionBack orders (`source: junction.today`).
+`/mushrooms` — bay cameras, growing cycle (oyster / milky / button), pack weights, book fresh mushrooms as junctionBack orders (`source: junction.today`). Guide chapter: `/guide/mushroom-growing-cycle`.
