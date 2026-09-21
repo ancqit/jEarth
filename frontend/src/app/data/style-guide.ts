@@ -198,7 +198,7 @@ export const STYLE_ARTICLES: GuideArticle[] = [
           'Favicons come from branding/ via sync — not Angular scaffold leftovers.',
           'Drawers: closed default, outside-tap + idle dismiss where used.',
           'Prefer editing existing map/Get patterns over inventing a dashboard card stack.',
-          'Site copyright line present: © {year} Sunskriti Data Management Company (mute, ~0.68rem).',
+          'Site copyright line present in footer chrome: © {year} Sunskriti Data Management Company (Caption: mute + --text-xs).',
         ],
       },
       {
@@ -225,8 +225,9 @@ export const STYLE_ARTICLES: GuideArticle[] = [
         type: 'ul',
         items: [
           'Use the current calendar year (dynamic in code is fine).',
-          'Mute color, ~0.68rem, map-control weight — not a loud marketing banner.',
-          'Place in the site footer (or equivalent chrome), available on all Junction websites.',
+          'Mute Caption: `var(--mute)` / `#6b7c72`, `var(--text-xs)` (~0.6875rem), regular weight — not a marketing banner.',
+          'Place as a real footer: fixed bottom bar or document footer with `--page-pad-x` and safe-area padding. On phone it must sit at the viewport/page footer, not inside a stacked hero column.',
+          'On map shells, keep z-index below Get FAB and clear the left FAB with padding when ≤720px.',
           'Do not invent alternate legal entity names; legal pack uses Sunskriti Data Management Company.',
         ],
       },

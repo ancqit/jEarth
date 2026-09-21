@@ -43,8 +43,8 @@ Canonical line on every Junction public site:
 
 `© {year} Sunskriti Data Management Company`
 
-- Mute, ~0.68rem (map-control scale)
-- Footer / site chrome — not a banner
+- Caption: mute `#6b7c72` / `--mute`, `--text-xs` (~0.6875rem), regular weight
+- Real footer chrome (fixed bottom or flex document footer) with `--page-pad-x` + safe-area — not a corner chip or hero-column orphan on phone
 - Chapter: `/style/copyright`
 
 ## Agent checklist
