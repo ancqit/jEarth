@@ -21,6 +21,13 @@ export const routes: Routes = [
       import('./pages/style-guide/style-guide.component').then((m) => m.StyleGuideComponent),
   },
   {
+    path: 'style/components',
+    loadComponent: () =>
+      import('./pages/style-components/style-components.component').then(
+        (m) => m.StyleComponentsComponent,
+      ),
+  },
+  {
     path: 'style/:slug',
     loadComponent: () =>
       import('./pages/article/article.component').then((m) => m.ArticleComponent),

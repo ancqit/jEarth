@@ -59,3 +59,15 @@
   color: var(--ink-soft);
   line-height: 1.45;
 }
+
+.toc .featured {
+  border-color: rgba(243, 215, 130, 0.85);
+  box-shadow: 0 0 0 1px rgba(243, 215, 130, 0.45), var(--shadow);
+}
+
+.toc code {
+  font-size: 0.85em;
+  background: rgba(25, 75, 49, 0.08);
+  padding: 0.05em 0.35em;
+  border-radius: 0.3rem;
+}

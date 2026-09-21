@@ -23,6 +23,16 @@ This file is the machine-readable mirror (`/style.md`) for agents.
 
 Map-control scale: type ~0.68rem, height ~1.85rem, FAB ~2rem, radius ~0.55rem, shadow `0 8px 18px rgba(15,23,42,0.16)`, cream `rgba(255,252,245,0.96)`.
 
+## Components
+
+Live demos: `/style/components` (brand book `#components`).
+
+- **Buttons:** Primary (forest), Secondary (glass), Ghost (gold wash), Disabled, map-scale Get, gold J FAB
+- **Form:** label kicker + control; invalid uses danger border + plain-language error
+- **Card:** kicker + Georgia title + mute body
+- **Footer:** Caption mute (`--text-xs` / `#6b7c72`), page pad + safe-area; not a corner chip
+- **Map chrome:** type 0.68rem · height 1.85rem · FAB 2rem · radius 0.55rem; phone-install UI ≤720px; drawers closed by default
+
 ## Get drawer
 
 1. Gold J, bottom-left, under modals.
@@ -58,9 +68,10 @@ Canonical line on every Junction public site:
 
 ## Chapters
 
-1. `/style/principles`
-2. `/style/color-type`
-3. `/style/controls`
-4. `/style/branding-build`
-5. `/style/agent-checklist`
-6. `/style/copyright`
+1. `/style/components` — live component gallery
+2. `/style/principles`
+3. `/style/color-type`
+4. `/style/controls`
+5. `/style/branding-build`
+6. `/style/agent-checklist`
+7. `/style/copyright`

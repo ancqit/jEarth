@@ -203,7 +203,7 @@ export const STYLE_ARTICLES: GuideArticle[] = [
       },
       {
         type: 'p',
-        text: 'Canonical URL once deployed: /style on the jEarth site. Raw markdown mirror: /style.md for fetchable agent context.',
+        text: 'Canonical URL once deployed: /style on the jEarth site. Live components: /style/components. Raw markdown mirror: /style.md for fetchable agent context.',
       },
     ],
   },

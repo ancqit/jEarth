@@ -7,12 +7,24 @@
     you need a machine-readable mirror.
   </p>
   <div class="cta">
-    <a class="btn btn-primary" [routerLink]="['/style', 'principles']">Start with principles</a>
+    <a class="btn btn-primary" routerLink="/style/components">Open components</a>
+    <a class="btn btn-ghost" [routerLink]="['/style', 'principles']">Start with principles</a>
     <a class="btn btn-ghost" [href]="rawUrl()" target="_blank" rel="noreferrer">Raw style.md</a>
   </div>
 </section>
 
 <ol class="toc">
+  <li class="card featured">
+    <span class="num">★</span>
+    <div>
+      <p class="kicker">05 · Components · live</p>
+      <h2><a routerLink="/style/components">Components</a></h2>
+      <p>
+        Buttons, form, card, Caption footer, and map chrome — the brand book
+        <code>#components</code> demos, live on jEarth.
+      </p>
+    </div>
+  </li>
   @for (article of articles; track article.slug; let i = $index) {
     <li class="card">
       <span class="num">{{ i + 1 }}</span>
