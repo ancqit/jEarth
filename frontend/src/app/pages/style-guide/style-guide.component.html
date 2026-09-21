@@ -1,0 +1,26 @@
+<section class="hero">
+  <p class="kicker">Junction style guide</p>
+  <h1>The book agents open instead of guessing.</h1>
+  <p class="lede">
+    Corporate-grade product language for Junction — colors, controls, phone software, and build
+    rules. Same forest/gold paper as junction.today. Read the chapters; fetch the raw markdown when
+    you need a machine-readable mirror.
+  </p>
+  <div class="cta">
+    <a class="btn btn-primary" [routerLink]="['/style', 'principles']">Start with principles</a>
+    <a class="btn btn-ghost" [href]="rawUrl()" target="_blank" rel="noreferrer">Raw style.md</a>
+  </div>
+</section>
+
+<ol class="toc">
+  @for (article of articles; track article.slug; let i = $index) {
+    <li class="card">
+      <span class="num">{{ i + 1 }}</span>
+      <div>
+        <p class="kicker">{{ article.chapter }} · {{ article.minutes }} min</p>
+        <h2><a [routerLink]="['/style', article.slug]">{{ article.title }}</a></h2>
+        <p>{{ article.summary }}</p>
+      </div>
+    </li>
+  }
+</ol>
