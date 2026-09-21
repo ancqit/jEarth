@@ -20,7 +20,7 @@ Proxy: `/api` → junctionBack.
 
 ## Style guide (for humans + agents)
 
-- Site: `/style` (chapters under `/style/:slug`)
+- Site: `/style` (chapters under `/style/:slug`); live gallery at `/style/components`
 - Raw markdown mirror: `/style.md` — fetch this instead of re-narrating design basics in chat
 - Covers principles, tokens, Get/map controls, branding builds, agent checklist
 
