@@ -37,6 +37,16 @@ Map-control scale: type ~0.68rem, height ~1.85rem, FAB ~2rem, radius ~0.55rem, s
 - `tools/sync-web-branding.mjs` on every web build — never ship Angular default favicon (~15KB).
 - No APK/IPA under `public/downloads` during `cap sync`.
 
+## Copyright
+
+Canonical line on every Junction public site:
+
+`© {year} Sunskriti Data Management Company`
+
+- Mute, ~0.68rem (map-control scale)
+- Footer / site chrome — not a banner
+- Chapter: `/style/copyright`
+
 ## Agent checklist
 
 - [ ] Forest / gold / paper / DM Sans
@@ -53,3 +63,4 @@ Map-control scale: type ~0.68rem, height ~1.85rem, FAB ~2rem, radius ~0.55rem, s
 3. `/style/controls`
 4. `/style/branding-build`
 5. `/style/agent-checklist`
+6. `/style/copyright`

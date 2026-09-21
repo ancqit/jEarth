@@ -198,11 +198,37 @@ export const STYLE_ARTICLES: GuideArticle[] = [
           'Favicons come from branding/ via sync — not Angular scaffold leftovers.',
           'Drawers: closed default, outside-tap + idle dismiss where used.',
           'Prefer editing existing map/Get patterns over inventing a dashboard card stack.',
+          'Site copyright line present: © {year} Sunskriti Data Management Company (mute, ~0.68rem).',
         ],
       },
       {
         type: 'p',
         text: 'Canonical URL once deployed: /style on the jEarth site. Raw markdown mirror: /style.md for fetchable agent context.',
+      },
+    ],
+  },
+  {
+    slug: 'copyright',
+    title: 'Copyright line',
+    kicker: 'Style',
+    chapter: '06 · Legal',
+    minutes: 1,
+    summary: 'Every Junction public site shows the Sunskriti copyright in the footer.',
+    blocks: [
+      {
+        type: 'callout',
+        tone: 'gold',
+        caption: 'Canonical copy',
+        text: '© {year} Sunskriti Data Management Company',
+      },
+      {
+        type: 'ul',
+        items: [
+          'Use the current calendar year (dynamic in code is fine).',
+          'Mute color, ~0.68rem, map-control weight — not a loud marketing banner.',
+          'Place in the site footer (or equivalent chrome), available on all Junction websites.',
+          'Do not invent alternate legal entity names; legal pack uses Sunskriti Data Management Company.',
+        ],
       },
     ],
   },

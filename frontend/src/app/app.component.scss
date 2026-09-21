@@ -102,6 +102,16 @@ main {
   margin: 0 auto 1.5rem;
   color: var(--mute);
   font-size: 0.8rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.foot .copyright {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--mute);
 }
 
 @media (max-width: 720px) {
