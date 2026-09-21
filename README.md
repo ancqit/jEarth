@@ -20,8 +20,8 @@ Proxy: `/api` → junctionBack.
 
 ## Style guide (for humans + agents)
 
-- Site: `/style` visual brand book (`/style#components`); written chapters under `/style/:slug`; static mirror `/brand-book/index.html`
-- Raw markdown mirror: `/style.md` — fetch this instead of re-narrating design basics in chat
+- Site: `/style` is the 11-section brand book (`#color`, `#type`, `#components`, `#agents`, …) served from `/brand-book/index.html`
+- Written depth chapters: `/style/:slug` · prose: `/brand-book/JUNCTION-BRAND-BOOK.md` · raw: `/style.md`
 - Covers principles, tokens, Get/map controls, branding builds, agent checklist
 
 ## Guidebook

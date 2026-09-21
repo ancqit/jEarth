@@ -1,8 +1,0 @@
-/* Full-bleed brand book inside constrained <main>. */
-:host {
-  display: block;
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-  position: relative;
-}
