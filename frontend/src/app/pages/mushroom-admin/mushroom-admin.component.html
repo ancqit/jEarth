@@ -1,0 +1,73 @@
+<section class="hero">
+  <p class="kicker">{{ 'farm.adminKicker' | t }}</p>
+  <h1>{{ 'farm.adminTitle' | t }}</h1>
+  <p class="lede">{{ 'farm.adminLede' | t }}</p>
+  <a routerLink="/mushrooms">← {{ 'farm.backFarm' | t }}</a>
+</section>
+
+@if (error()) {
+  <p class="error-message">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="status-message">{{ message() }}</p>
+}
+
+<section class="card block">
+  <h2>{{ 'farm.adminToken' | t }}</h2>
+  <label class="field">
+    <span>JWT</span>
+    <input type="password" [ngModel]="adminToken()" (ngModelChange)="adminToken.set($event)" />
+  </label>
+  <button type="button" class="btn btn-primary" (click)="saveToken()">{{ 'farm.saveToken' | t }}</button>
+</section>
+
+<section class="card block">
+  <h2>{{ 'farm.addGrower' | t }}</h2>
+  <label class="field"><span>{{ 'farm.growerName' | t }}</span>
+    <input [ngModel]="growerName()" (ngModelChange)="growerName.set($event)" />
+  </label>
+  <label class="field"><span>{{ 'farm.area' | t }}</span>
+    <input [ngModel]="growerArea()" (ngModelChange)="growerArea.set($event)" placeholder="Indiranagar, Bengaluru" />
+  </label>
+  <label class="field"><span>{{ 'farm.crop' | t }}</span>
+    <input [ngModel]="growerCrop()" (ngModelChange)="growerCrop.set($event)" />
+  </label>
+  <label class="field"><span>{{ 'farm.stage' | t }}</span>
+    <select [ngModel]="growerStage()" (ngModelChange)="growerStage.set($event)">
+      <option value="inoculation">inoculation</option>
+      <option value="spawn-run">spawn-run</option>
+      <option value="pinning">pinning</option>
+      <option value="fruiting">fruiting</option>
+      <option value="harvest">harvest</option>
+      <option value="rest">rest</option>
+    </select>
+  </label>
+  <label class="field"><span>{{ 'farm.day' | t }}</span>
+    <input type="number" min="0" [ngModel]="growerDay()" (ngModelChange)="growerDay.set(+$event || 0)" />
+  </label>
+  <label class="field"><span>{{ 'farm.units' | t }}</span>
+    <input type="number" min="0" [ngModel]="growerUnits()" (ngModelChange)="growerUnits.set(+$event || 0)" />
+  </label>
+  <label class="field"><span>{{ 'farm.price' | t }}</span>
+    <input type="number" min="0" [ngModel]="growerPrice()" (ngModelChange)="growerPrice.set(+$event || 0)" />
+  </label>
+  <button type="button" class="btn btn-primary" [disabled]="saving()" (click)="addGrower()">
+    {{ 'farm.saveGrower' | t }}
+  </button>
+</section>
+
+<section class="card block">
+  <h2>{{ 'farm.addApartment' | t }}</h2>
+  <label class="field"><span>{{ 'farm.aptName' | t }}</span>
+    <input [ngModel]="aptName()" (ngModelChange)="aptName.set($event)" />
+  </label>
+  <label class="field"><span>{{ 'farm.area' | t }}</span>
+    <input [ngModel]="aptArea()" (ngModelChange)="aptArea.set($event)" placeholder="Indiranagar, Bengaluru" />
+  </label>
+  <label class="field"><span>{{ 'farm.address' | t }}</span>
+    <input [ngModel]="aptAddress()" (ngModelChange)="aptAddress.set($event)" />
+  </label>
+  <button type="button" class="btn btn-primary" [disabled]="saving()" (click)="addApartment()">
+    {{ 'farm.saveApartment' | t }}
+  </button>
+</section>

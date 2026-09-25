@@ -50,5 +50,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/mushrooms/mushrooms.component').then((m) => m.MushroomsComponent),
   },
+  {
+    path: 'mushrooms/admin',
+    loadComponent: () =>
+      import('./pages/mushroom-admin/mushroom-admin.component').then((m) => m.MushroomAdminComponent),
+  },
+  {
+    path: 'mushrooms/dump',
+    loadComponent: () =>
+      import('./pages/mushroom-dump/mushroom-dump.component').then((m) => m.MushroomDumpComponent),
+  },
   { path: '**', redirectTo: '' },
 ];

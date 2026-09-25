@@ -34,7 +34,11 @@
     </nav>
   } @else if (desk() === 'grow') {
     <nav class="tools" aria-label="Mushroom farm">
-      <a routerLink="/mushrooms" routerLinkActive="on">{{ 'nav.farm' | t }}</a>
+      <a routerLink="/mushrooms" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">{{
+        'nav.farm' | t
+      }}</a>
+      <a routerLink="/mushrooms/admin" routerLinkActive="on">{{ 'nav.admin' | t }}</a>
+      <a routerLink="/mushrooms/dump" routerLinkActive="on">{{ 'nav.dump' | t }}</a>
     </nav>
   } @else {
     <nav class="tools" aria-label="Style">

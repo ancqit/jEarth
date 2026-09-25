@@ -31,7 +31,8 @@ export const sessionInterceptor: HttpInterceptorFn = (request, next) => {
     token &&
     isApiRequest(request.url) &&
     !isSessionCreateRequest(request.url, request.method) &&
-    !request.context.get(SKIP_SESSION_AUTH)
+    !request.context.get(SKIP_SESSION_AUTH) &&
+    !request.headers.has('Authorization')
   ) {
     outgoing = request.clone({
       setHeaders: { Authorization: `Bearer ${token}` },

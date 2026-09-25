@@ -1,199 +1,301 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { catchError, of, switchMap } from 'rxjs';
-import { CatalogApi } from '../../core/catalog.api';
+import { RouterLink } from '@angular/router';
+import {
+  LocationPickerModalComponent,
+  PickerOption,
+} from '../../components/location-picker-modal/location-picker-modal.component';
+import {
+  SearchableOption,
+  SearchableSelectComponent,
+} from '../../components/searchable-select/searchable-select.component';
+import { EarthApartment, EarthFarmApi, EarthGrower } from '../../core/earth-farm.api';
+import { downloadFarmOrderPdf } from '../../core/farm-order-pdf';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { LocationsApi } from '../../core/locations.api';
 import { OrdersApi } from '../../core/orders.api';
-import { resolveProductImageSource } from '../../core/product-image.util';
-import { InatPhoto, PublicApisService, WeatherNow } from '../../core/public-apis.service';
-import { SessionService } from '../../core/session.service';
-import { FALLBACK_BAGS, FARM_CAMERAS, GrowBag } from '../../data/mushrooms';
-import { Product, Shop } from '../../models/catalog.model';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
+
+type FarmTab = 'growers' | 'apartments';
+type ActivePicker = 'city' | 'locality' | null;
 
 @Component({
   selector: 'app-mushrooms',
-  imports: [FormsModule, DecimalPipe],
+  imports: [
+    FormsModule,
+    RouterLink,
+    TranslatePipe,
+    LocationPickerModalComponent,
+    SearchableSelectComponent,
+  ],
   templateUrl: './mushrooms.component.html',
   styleUrl: './mushrooms.component.scss',
 })
 export class MushroomsComponent implements OnInit {
-  private readonly catalog = inject(CatalogApi);
+  private readonly farmApi = inject(EarthFarmApi);
+  private readonly locations = inject(LocationsApi);
   private readonly orders = inject(OrdersApi);
-  private readonly session = inject(SessionService);
-  private readonly publicApis = inject(PublicApisService);
+  readonly i18n = inject(I18nService);
 
-  readonly cameras = FARM_CAMERAS;
-  readonly activeCam = signal(this.cameras[0].id);
-  readonly bags = signal<GrowBag[]>(FALLBACK_BAGS);
-  readonly shop = signal<Shop | null>(null);
-  readonly catalogNote = signal('Showing farm catalogue. Live junctionBack stock loads if a mushroom shop exists.');
-  readonly quantity = signal(1);
-  readonly selectedId = signal(FALLBACK_BAGS[0].id);
+  readonly tab = signal<FarmTab>('growers');
+  readonly city = signal('');
+  readonly locality = signal('');
+  readonly cities = signal<PickerOption[]>([]);
+  readonly localities = signal<PickerOption[]>([]);
+  readonly citiesLoading = signal(false);
+  readonly localitiesLoading = signal(false);
+  readonly activePicker = signal<ActivePicker>(null);
+  readonly searching = signal(false);
+  readonly growers = signal<EarthGrower[]>([]);
+  readonly apartments = signal<EarthApartment[]>([]);
+  readonly selectedGrowerId = signal<string | null>(null);
+  readonly orderApartment = signal<EarthApartment | null>(null);
+  readonly flatNumber = signal('');
+  readonly flatOpen = signal(false);
+  readonly orderOpen = signal(false);
+  readonly orderGrowerId = signal<string | null>(null);
+  readonly units = signal(1);
   readonly customerName = signal('');
-  readonly customerEmail = signal('');
-  readonly bookingMessage = signal('');
-  readonly bookingError = signal('');
   readonly submitting = signal(false);
-  readonly wild = signal<InatPhoto[]>([]);
-  readonly climate = signal<WeatherNow | null>(null);
-  readonly gbifCount = signal<number | null>(null);
-  readonly climatePlace = signal('Bengaluru (default farm climate)');
+  readonly message = signal('');
+  readonly error = signal('');
 
-  readonly selectedCam = computed(
-    () => this.cameras.find((cam) => cam.id === this.activeCam()) ?? this.cameras[0],
-  );
-  readonly selectedBag = computed(
-    () => this.bags().find((bag) => bag.id === this.selectedId()) ?? this.bags()[0],
-  );
-  setQuantity(value: number | string): void {
-    this.quantity.set(Math.max(1, Number(value) || 1));
-  }
+  readonly areaLabel = computed(() => {
+    const city = this.city().trim();
+    const locality = this.locality().trim();
+    if (city && locality) {
+      return `${locality}, ${city}`;
+    }
+    return city || locality;
+  });
 
-  readonly yieldText = computed(() => {
-    const bag = this.selectedBag();
-    const qty = Math.max(1, this.quantity());
-    const low = (bag.expectedYieldKg[0] * qty).toFixed(1);
-    const high = (bag.expectedYieldKg[1] * qty).toFixed(1);
-    return `${low}–${high} kg across ${bag.flushes} flushes · first pick ~${bag.daysToFirstPick} days`;
+  readonly selectedGrower = computed(() => {
+    const id = this.selectedGrowerId();
+    return this.growers().find((g) => g.id === id) ?? null;
+  });
+
+  readonly growerOptions = computed<SearchableOption[]>(() =>
+    this.growers().map((g) => ({
+      value: g.id,
+      label: `${g.name} · ${g.crop_name} · ${g.currency} ${g.unit_price}`,
+    })),
+  );
+
+  readonly orderGrower = computed(() => {
+    const id = this.orderGrowerId();
+    return this.growers().find((g) => g.id === id) ?? null;
+  });
+
+  readonly orderTotal = computed(() => {
+    const grower = this.orderGrower();
+    const qty = Math.max(1, this.units());
+    return grower ? grower.unit_price * qty : 0;
   });
 
   ngOnInit(): void {
-    this.loadPublicBiology();
-    this.session
-      .ensureSession()
-      .pipe(
-        switchMap(() => this.catalog.allShops()),
-        catchError(() => of([] as Shop[])),
-      )
-      .subscribe((shops) => {
-        const match =
-          shops.find((shop) => /mush|fungi|spawn|oyster/i.test(`${shop.name} ${shop.shop_type ?? ''}`)) ??
-          shops[0];
-        if (!match) {
-          this.catalogNote.set(
-            'junctionBack returned no shops yet. Fallback grow bags stay bookable against the farm store id when the shop exists.',
-          );
-          return;
-        }
-        this.shop.set(match);
-        this.catalog
-          .productsForShop(match.id)
-          .pipe(catchError(() => of([] as Product[])))
-          .subscribe((products) => {
-            const live = products.filter((product) => product.status !== 'inactive');
-            if (!live.length) {
-              this.catalogNote.set(
-                `Connected to shop “${match.name}” but it has no products yet. Showing the farm’s own bag list. Bookings still POST /orders to junctionBack with this store id.`,
-              );
-              this.bags.set(FALLBACK_BAGS.map((bag) => ({ ...bag, store_id: match.id })));
-              return;
-            }
-            this.catalogNote.set(`Live catalogue from junctionBack shop “${match.name}”.`);
-            this.bags.set(live.map((product) => this.toBag(product, match.id)));
-            this.selectedId.set(this.bags()[0].id);
-          });
-      });
+    this.loadCities();
   }
 
-  book(): void {
-    const bag = this.selectedBag();
-    const name = this.customerName().trim();
-    if (!name) {
-      this.bookingError.set('Name is required so the farm can label the bay.');
+  openCityPicker(): void {
+    this.activePicker.set('city');
+    if (!this.cities().length) {
+      this.loadCities();
+    }
+  }
+
+  openLocalityPicker(): void {
+    if (!this.city().trim()) {
+      this.error.set(this.i18n.t('farm.cityFirst'));
       return;
     }
-    const qty = Math.max(1, Math.floor(this.quantity()));
-    const subtotal = round2(bag.price * qty);
-    const email = this.customerEmail().trim();
+    this.activePicker.set('locality');
+    this.loadLocalities(this.city());
+  }
+
+  onPickerDismiss(): void {
+    this.activePicker.set(null);
+  }
+
+  onCityPicked(name: string): void {
+    this.city.set(name.trim());
+    this.locality.set('');
+    this.localities.set([]);
+    this.activePicker.set(null);
+    this.clearResults();
+  }
+
+  onLocalityPicked(name: string): void {
+    this.locality.set(name.trim());
+    this.activePicker.set(null);
+    this.searchArea();
+  }
+
+  searchArea(): void {
+    const area = this.areaLabel();
+    if (!area) {
+      this.error.set(this.i18n.t('farm.pickArea'));
+      return;
+    }
+    this.searching.set(true);
+    this.error.set('');
+    this.message.set('');
+    this.farmApi.search(area).subscribe({
+      next: (res) => {
+        this.growers.set(res.growers);
+        this.apartments.set(res.apartments);
+        this.selectedGrowerId.set(res.growers[0]?.id ?? null);
+        this.searching.set(false);
+        if (!res.growers.length && !res.apartments.length) {
+          this.message.set(this.i18n.t('farm.emptyArea'));
+        }
+      },
+      error: () => {
+        this.searching.set(false);
+        this.error.set(this.i18n.t('farm.searchError'));
+      },
+    });
+  }
+
+  setTab(tab: FarmTab): void {
+    this.tab.set(tab);
+  }
+
+  selectGrower(id: string): void {
+    this.selectedGrowerId.set(id);
+  }
+
+  openApartment(apartment: EarthApartment): void {
+    this.orderApartment.set(apartment);
+    this.flatNumber.set('');
+    this.flatOpen.set(true);
+    this.error.set('');
+  }
+
+  closeFlat(): void {
+    this.flatOpen.set(false);
+  }
+
+  confirmFlat(): void {
+    const flat = this.flatNumber().trim();
+    if (!flat) {
+      this.error.set(this.i18n.t('farm.flatRequired'));
+      return;
+    }
+    this.flatOpen.set(false);
+    this.orderGrowerId.set(this.growers()[0]?.id ?? null);
+    this.units.set(1);
+    this.customerName.set('');
+    this.orderOpen.set(true);
+  }
+
+  closeOrder(): void {
+    this.orderOpen.set(false);
+  }
+
+  onOrderGrowerChange(id: string | null): void {
+    this.orderGrowerId.set(id);
+  }
+
+  setUnits(value: number | string): void {
+    this.units.set(Math.max(1, Math.floor(Number(value) || 1)));
+  }
+
+  placeOrder(): void {
+    const grower = this.orderGrower();
+    const apartment = this.orderApartment();
+    const name = this.customerName().trim();
+    const flat = this.flatNumber().trim();
+    const qty = Math.max(1, this.units());
+    if (!grower || !apartment) {
+      this.error.set(this.i18n.t('farm.orderIncomplete'));
+      return;
+    }
+    if (!name) {
+      this.error.set(this.i18n.t('farm.nameRequired'));
+      return;
+    }
+    const total = grower.unit_price * qty;
     this.submitting.set(true);
-    this.bookingError.set('');
-    this.bookingMessage.set('');
+    this.error.set('');
     this.orders
       .create({
-        store_id: this.shop()?.id ?? bag.store_id,
+        store_id: grower.id,
         customer_name: name,
-        customer_email: email || undefined,
         items: [
           {
-            product_id: bag.id.startsWith('bag-') ? undefined : bag.id,
-            product_name: bag.name,
-            sku: bag.sku,
+            product_name: `${grower.crop_name} · ${grower.name}`,
+            sku: grower.id,
             quantity: qty,
-            unit_price: bag.price,
+            unit_price: grower.unit_price,
           },
         ],
         billing: {
-          subtotal,
+          subtotal: total,
           tax_amount: 0,
-          total_amount: subtotal,
-          currency: bag.currency || 'INR',
+          total_amount: total,
+          currency: grower.currency || 'INR',
           payment_method: 'cash',
           payment_status: 'pending',
         },
         status: 'pending',
-        notes: `jEarth mushroom bag booking · expected yield ${this.yieldText()}`,
-        source: 'junction.today',
+        notes: `apartment=${apartment.name}; flat=${flat}; area=${this.areaLabel()}`,
+        source: 'junction.earth',
       })
       .subscribe({
         next: (order) => {
           this.submitting.set(false);
-          this.bookingMessage.set(
-            `Booked ${qty} × ${bag.name}. Order ${order.order_number}. Pay cash / UPI when the farm confirms the slot.`,
-          );
+          this.orderOpen.set(false);
+          this.message.set(this.i18n.t('farm.orderOk', { number: order.order_number }));
+          downloadFarmOrderPdf({
+            orderNumber: order.order_number || order.id,
+            customerName: name,
+            apartmentName: apartment.name,
+            flatNumber: flat,
+            growerName: grower.name,
+            cropName: grower.crop_name,
+            units: qty,
+            unitPrice: grower.unit_price,
+            currency: grower.currency || 'INR',
+            area: this.areaLabel(),
+            createdAt: order.created_at || new Date().toISOString(),
+          });
         },
         error: () => {
           this.submitting.set(false);
-          this.bookingError.set(
-            'junctionBack did not accept the order (shop id, session, or validation). The bag list still stands — retry after the farm shop is live, or book with a real product id from /shops.',
-          );
+          this.error.set(this.i18n.t('farm.orderError'));
         },
       });
   }
 
-  private loadPublicBiology(): void {
-    this.publicApis.inatMushrooms('Pleurotus').subscribe((photos) => this.wild.set(photos));
-    this.publicApis.gbifCount('Pleurotus ostreatus').subscribe((count) => this.gbifCount.set(count));
-    const applyClimate = (lat: number, lon: number, label: string) => {
-      this.climatePlace.set(label);
-      this.publicApis.climate(lat, lon).subscribe((row) => this.climate.set(row));
-    };
-    if (typeof navigator !== 'undefined' && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => applyClimate(pos.coords.latitude, pos.coords.longitude, 'Your location (Open-Meteo)'),
-        () => applyClimate(12.9716, 77.5946, 'Bengaluru default (Open-Meteo)'),
-        { timeout: 4000 },
-      );
-    } else {
-      applyClimate(12.9716, 77.5946, 'Bengaluru default (Open-Meteo)');
-    }
+  stageLabel(stage: string): string {
+    return this.i18n.t(`farm.stage.${stage}`);
   }
 
-  private toBag(product: Product, storeId: string): GrowBag {
-    const yieldGuess = guessYield(product);
-    return {
-      id: product.id,
-      store_id: storeId,
-      sku: product.sku,
-      name: product.name,
-      description: product.description || 'Grow bag from the Junction shop catalogue.',
-      variety: product.category || 'Mushroom',
-      price: product.price,
-      currency: product.currency || 'INR',
-      expectedYieldKg: yieldGuess,
-      daysToFirstPick: 14,
-      flushes: 3,
-      substrate: 'Shop-listed substrate',
-      stock_quantity: product.stock_quantity,
-      image: resolveProductImageSource(product),
-    };
+  private loadCities(): void {
+    this.citiesLoading.set(true);
+    this.locations.cities().subscribe({
+      next: (rows) => {
+        this.cities.set(rows.map((name) => ({ id: name, label: name })));
+        this.citiesLoading.set(false);
+      },
+      error: () => this.citiesLoading.set(false),
+    });
   }
-}
 
-function round2(value: number): number {
-  return Math.round(value * 100) / 100;
-}
+  private loadLocalities(city: string): void {
+    this.localitiesLoading.set(true);
+    this.locations.localities(city).subscribe({
+      next: (rows) => {
+        this.localities.set(rows.map((name) => ({ id: name, label: name })));
+        this.localitiesLoading.set(false);
+      },
+      error: () => this.localitiesLoading.set(false),
+    });
+  }
 
-function guessYield(product: Product): [number, number] {
-  const fromPrice = Math.max(0.4, Math.min(2, product.price / 400));
-  return [round2(fromPrice), round2(fromPrice * 1.6)];
+  private clearResults(): void {
+    this.growers.set([]);
+    this.apartments.set([]);
+    this.selectedGrowerId.set(null);
+  }
 }
