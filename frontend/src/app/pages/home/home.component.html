@@ -3,15 +3,17 @@
   <h1>{{ 'home.title' | t }}</h1>
   <p class="lede">{{ 'home.lede' | t }}</p>
 
-  <label class="waste-search" for="waste-search-input">
-    <span class="waste-search-label">{{ 'home.searchLabel' | t }}</span>
-    <div class="waste-search-row">
+  <form class="google-search" role="search" (submit)="$event.preventDefault()">
+    <label class="sr-only" for="waste-search-input">{{ 'home.searchLabel' | t }}</label>
+    <div class="google-search-row">
+      <span class="google-search-icon" aria-hidden="true">⌕</span>
       <input
         id="waste-search-input"
         type="search"
-        class="waste-search-input"
+        class="google-search-input"
         autocomplete="off"
         spellcheck="false"
+        autofocus
         [value]="query()"
         [placeholder]="'home.searchPh' | t"
         [attr.aria-label]="'home.searchLabel' | t"
@@ -20,7 +22,7 @@
       @if (query().trim()) {
         <button
           type="button"
-          class="waste-search-clear"
+          class="google-search-clear"
           (click)="clearSearch()"
           [attr.aria-label]="'home.searchClear' | t"
         >
@@ -28,34 +30,52 @@
         </button>
       }
     </div>
-  </label>
+  </form>
 </section>
 
 <section class="archive-results" aria-live="polite">
-  @if (!query().trim()) {
+  @if (loading()) {
+    <p class="status-message">{{ 'home.searching' | t }}</p>
+  } @else if (!searched()) {
     <p class="status-message">{{ 'home.emptyHint' | t }}</p>
   } @else if (results().length === 0) {
     <p class="status-message">{{ 'home.noMatch' | t }}</p>
   } @else {
-    <ul class="result-list">
-      @for (entry of results(); track entry.id) {
-        <li class="card result-card">
-          <h2>{{ nameOf(entry) }}</h2>
-          <p class="type-row">
-            <span class="type-label">{{ 'home.typeLabel' | t }}</span>
-            <strong class="type-pill">{{ streamKey(entry) | t }}</strong>
-          </p>
-          <div class="dispose">
-            <p class="dispose-label">{{ 'home.disposeLabel' | t }}</p>
-            <ol>
-              @for (step of disposeOf(entry); track step) {
-                <li>{{ step }}</li>
-              }
-            </ol>
+    <p class="result-meta">{{ 'home.resultCount' | t: { count: results().length, query: query().trim() } }}</p>
+    <ol class="serp-list">
+      @for (hit of results(); track hit.id) {
+        <li class="serp-item">
+          <div class="serp-top">
+            @if (hit.sources[0]?.url; as href) {
+              <a class="serp-url" [href]="href" target="_blank" rel="noopener noreferrer">{{
+                hit.sources[0].title || href
+              }}</a>
+            } @else {
+              <span class="serp-url">junction.earth/archive</span>
+            }
+            <span class="type-pill">{{ streamKey(hit) | t }}</span>
           </div>
+          <h2 class="serp-title">
+            @if (hit.sources[0]?.url; as href) {
+              <a [href]="href" target="_blank" rel="noopener noreferrer">{{ hit.title }}</a>
+            } @else {
+              {{ hit.title }}
+            }
+          </h2>
+          <p class="serp-snippet">{{ hit.snippet }}</p>
+          @if (hit.dispose.length) {
+            <div class="dispose">
+              <p class="dispose-label">{{ 'home.disposeLabel' | t }}</p>
+              <ol>
+                @for (step of hit.dispose; track step) {
+                  <li>{{ step }}</li>
+                }
+              </ol>
+            </div>
+          }
         </li>
       }
-    </ul>
+    </ol>
   }
 </section>
 
