@@ -1,29 +1,76 @@
-<header class="top">
+<header class="top" [attr.data-desk]="desk()">
   <a class="brand" routerLink="/">
     <img src="favicon.svg" width="32" height="32" alt="" />
     <span>
       <strong>jEarth</strong>
-      <small>Junction</small>
+      <small>{{ brandSubKey() | t }}</small>
     </span>
   </a>
-  <nav>
-    <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Earth</a>
-    <a routerLink="/style" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Style</a>
-    <a routerLink="/guide" routerLinkActive="on">Waste guide</a>
-    <a routerLink="/sort" routerLinkActive="on">Check waste</a>
-    <a routerLink="/heroes" routerLinkActive="on">Heroes</a>
-    <a routerLink="/nearby" routerLinkActive="on">Nearby</a>
-    <a routerLink="/mushrooms" routerLinkActive="on">Mushrooms</a>
-  </nav>
-  <a class="today" href="https://junction.today" target="_blank" rel="noreferrer">junction.today</a>
+
+  <div class="desk-switch" role="navigation" [attr.aria-label]="'desk.switch' | t">
+    <a
+      routerLink="/"
+      routerLinkActive="on"
+      [routerLinkActiveOptions]="{ exact: true }"
+      [class.on]="desk() === 'waste'"
+      class="desk-link"
+    >
+      {{ 'desk.waste' | t }}
+    </a>
+    <a routerLink="/mushrooms" routerLinkActive="on" class="desk-link">
+      {{ 'desk.grow' | t }}
+    </a>
+  </div>
+
+  @if (desk() === 'waste') {
+    <nav class="tools" aria-label="Waste tools">
+      <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">{{
+        'nav.search' | t
+      }}</a>
+      <a routerLink="/guide" routerLinkActive="on">{{ 'nav.guide' | t }}</a>
+      <a routerLink="/sort" routerLinkActive="on">{{ 'nav.sort' | t }}</a>
+      <a routerLink="/heroes" routerLinkActive="on">{{ 'nav.heroes' | t }}</a>
+      <a routerLink="/nearby" routerLinkActive="on">{{ 'nav.nearby' | t }}</a>
+    </nav>
+  } @else if (desk() === 'grow') {
+    <nav class="tools" aria-label="Mushroom farm">
+      <a routerLink="/mushrooms" routerLinkActive="on">{{ 'nav.farm' | t }}</a>
+    </nav>
+  } @else {
+    <nav class="tools" aria-label="Style">
+      <a routerLink="/style" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">{{
+        'nav.style' | t
+      }}</a>
+    </nav>
+  }
+
+  <div class="header-end">
+    <a
+      class="chip-link"
+      routerLink="/style"
+      routerLinkActive="on"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >{{ 'nav.style' | t }}</a
+    >
+    <div class="lang-toggle" role="group" [attr.aria-label]="'lang.group' | t">
+      <button type="button" [class.active]="i18n.lang() === 'hi'" (click)="i18n.setLang('hi')">
+        {{ 'lang.hi' | t }}
+      </button>
+      <button type="button" [class.active]="i18n.lang() === 'en'" (click)="i18n.setLang('en')">
+        {{ 'lang.en' | t }}
+      </button>
+    </div>
+    <a class="today" href="https://junction.today" target="_blank" rel="noreferrer">{{
+      'nav.today' | t
+    }}</a>
+  </div>
 </header>
-<main [class.main--style]="styleBookOpen()">
+<main [class.main--style]="styleBookOpen()" [attr.data-desk]="desk()">
   <router-outlet />
 </main>
 @if (!styleBookOpen()) {
   <footer class="foot">
-    <p>A Junction earth desk. Style from junction.today / junctionFrontweb. Catalog via junctionBack. Live layers: REST Countries, World Bank, Wikipedia, Open-Meteo, iNaturalist, GBIF, Overpass, GitHub.</p>
+    <p>{{ footerKey() | t }}</p>
     <p class="copyright">© {{ year }} Sunskriti Data Management Company</p>
   </footer>
 }
-

@@ -1,91 +1,85 @@
-<section class="hero">
-  <p class="kicker">Junction · earth desk</p>
-  <h1>The planet is a materials problem wearing a climate costume.</h1>
-  <p class="lede">
-    jEarth is two rooms in one house. The first is a waste guidebook: how to check a bag, what wet
-    and dry actually mean, how to dispose of each stream, and which countries already run the
-    system. The second is a mushroom farm: cameras on the bags, honest yield, booking through
-    junctionBack.
-  </p>
-  <div class="cta">
-    <a class="btn btn-primary" routerLink="/guide">Open the guidebook</a>
-    <a class="btn btn-ghost" routerLink="/mushrooms">Book grow bags</a>
-  </div>
-</section>
+<section class="hero search-hero">
+  <p class="kicker">{{ 'home.kicker' | t }}</p>
+  <h1>{{ 'home.title' | t }}</h1>
+  <p class="lede">{{ 'home.lede' | t }}</p>
 
-<section class="split">
-  <article class="card pane">
-    <p class="kicker">Room one</p>
-    <h2>Waste, written as a field manual</h2>
-    <p>
-      Not a slogan wall. Taxonomy, audit protocol, disposal chains, household SOP, compost science,
-      colour codes, bulk generators, and a live sorting lab so you can fail in private before you
-      contaminate a truck.
-    </p>
-    <a routerLink="/sort">Practice the 10-second test →</a>
-  </article>
-  <article class="card pane">
-    <p class="kicker">Room two</p>
-    <h2>Mushrooms on yesterday’s straw</h2>
-    <p>
-      Paddy straw that might have been burned becomes protein. You watch the bays, we publish
-      expected kilograms, you book bags. Orders are junctionBack POSTs, same session JWT as
-      junction.today.
-    </p>
-    <a routerLink="/heroes">Visit waste-hero countries →</a>
-  </article>
-</section>
-
-@if (wiki() || climate() || repos().length) {
-  <section class="live-strip">
-    <p class="kicker">Public APIs · no keys</p>
-    <h2 class="strip-title">Wikipedia, Open-Meteo, and GitHub sit next to the guidebook.</h2>
-    <div class="live-grid">
-      @if (wiki(); as page) {
-        <article class="card pane">
-          <p class="kicker">Wikipedia</p>
-          <h2>{{ page.title }}</h2>
-          <p>{{ page.extract }}</p>
-          @if (page.content_urls?.desktop?.page; as href) {
-            <a [href]="href" target="_blank" rel="noreferrer">Read the article →</a>
-          }
-        </article>
-      }
-      @if (climate(); as weather) {
-        <article class="card pane">
-          <p class="kicker">Open-Meteo · Bengaluru sample</p>
-          <h2>{{ weather.temperature }}°C · {{ weather.humidity }}% RH</h2>
-          <p>{{ weather.fruitingHint }}</p>
-          @if (weather.pm25 != null) {
-            <p>PM2.5 {{ weather.pm25 }} µg/m³ — smoke from mixed-waste fires shows up as air, not as a bin label.</p>
-          }
-        </article>
+  <form class="google-search" role="search" (submit)="$event.preventDefault()">
+    <label class="sr-only" for="waste-search-input">{{ 'home.searchLabel' | t }}</label>
+    <div class="google-search-row">
+      <span class="google-search-icon" aria-hidden="true">⌕</span>
+      <input
+        id="waste-search-input"
+        type="search"
+        class="google-search-input"
+        autocomplete="off"
+        spellcheck="false"
+        autofocus
+        [value]="query()"
+        [placeholder]="'home.searchPh' | t"
+        [attr.aria-label]="'home.searchLabel' | t"
+        (input)="onSearch($event)"
+      />
+      @if (query().trim()) {
+        <button
+          type="button"
+          class="google-search-clear"
+          (click)="clearSearch()"
+          [attr.aria-label]="'home.searchClear' | t"
+        >
+          ✕
+        </button>
       }
     </div>
-    @if (repos().length) {
-      <ul class="repos">
-        @for (repo of repos(); track repo.id) {
-          <li class="card">
-            <a [href]="repo.html_url" target="_blank" rel="noreferrer">{{ repo.full_name }}</a>
-            <span>{{ repo.stargazers_count }} ★ · {{ repo.language || 'n/a' }}</span>
-            <p>{{ repo.description }}</p>
-          </li>
-        }
-      </ul>
-    }
-  </section>
-}
+  </form>
+</section>
 
-<section>
-  <p class="kicker">Guidebook chapters</p>
-  <h2 class="strip-title">Start anywhere. The types chapter is the dictionary.</h2>
-  <div class="chapters">
-    @for (chapter of chapters; track chapter.slug) {
-      <a class="card chap" [routerLink]="['/guide', chapter.slug]">
-        <span>{{ chapter.chapter }} · {{ chapter.minutes }} min</span>
-        <strong>{{ chapter.title }}</strong>
-        <em>{{ chapter.summary }}</em>
-      </a>
-    }
-  </div>
+<section class="archive-results" aria-live="polite">
+  @if (loading()) {
+    <p class="status-message">{{ 'home.searching' | t }}</p>
+  } @else if (!searched()) {
+    <p class="status-message">{{ 'home.emptyHint' | t }}</p>
+  } @else if (results().length === 0) {
+    <p class="status-message">{{ 'home.noMatch' | t }}</p>
+  } @else {
+    <p class="result-meta">{{ 'home.resultCount' | t: { count: results().length, query: query().trim() } }}</p>
+    <ol class="serp-list">
+      @for (hit of results(); track hit.id) {
+        <li class="serp-item">
+          <div class="serp-top">
+            @if (hit.sources[0]?.url; as href) {
+              <a class="serp-url" [href]="href" target="_blank" rel="noopener noreferrer">{{
+                hit.sources[0].title || href
+              }}</a>
+            } @else {
+              <span class="serp-url">junction.earth/archive</span>
+            }
+            <span class="type-pill">{{ streamKey(hit) | t }}</span>
+          </div>
+          <h2 class="serp-title">
+            @if (hit.sources[0]?.url; as href) {
+              <a [href]="href" target="_blank" rel="noopener noreferrer">{{ hit.title }}</a>
+            } @else {
+              {{ hit.title }}
+            }
+          </h2>
+          <p class="serp-snippet">{{ hit.snippet }}</p>
+          @if (hit.dispose.length) {
+            <div class="dispose">
+              <p class="dispose-label">{{ 'home.disposeLabel' | t }}</p>
+              <ol>
+                @for (step of hit.dispose; track step) {
+                  <li>{{ step }}</li>
+                }
+              </ol>
+            </div>
+          }
+        </li>
+      }
+    </ol>
+  }
+</section>
+
+<section class="cta-row">
+  <a class="btn btn-primary" routerLink="/guide">{{ 'home.openGuide' | t }}</a>
+  <a class="btn btn-ghost" routerLink="/sort">{{ 'home.openSort' | t }}</a>
 </section>

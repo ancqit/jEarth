@@ -1,12 +1,15 @@
 # jEarth
 
-Junction earth desk: a detailed **waste guidebook**, a **mushroom farm** shop, and the **Junction style guide**.
+Junction earth is **two desks** (separation of concerns):
+
+1. **Waste search** (`/`) — Google-like archive search: item → waste type + how to dispose (Hindi/English). Guide, check lab, heroes, nearby belong here.
+2. **Mushroom farm** (`/mushrooms`) — watch bays, book grow bags via junctionBack. Separate product surface.
+
+Shared chrome only: style book (`/style`), language toggle, junction.today link.
 
 - Angular 19 frontend (`frontend/`)
-- Visual language from [jtoday](https://github.com/ancqit/jtoday) / [junctionFrontweb](https://github.com/ancqit/junctionFrontweb) (forest, gold, paper, DM Sans)
-- Catalog and bag bookings via [junctionBack](https://github.com/ancqit/junctionBack) (`POST /session`, `GET /shops`, `GET /shops/{id}/products`, `POST /orders`)
-- Public APIs (no keys): REST Countries, World Bank CO₂, Wikipedia, Open-Meteo, iNaturalist, GBIF, OpenStreetMap Overpass, GitHub Search
-- Vercel: `vercel.json` at the repo root **and** in `frontend/`. Install/build detect whether the working directory is the git root or `frontend` (Vercel Root Directory). Do not also force `--prefix frontend` when Root Directory is already `frontend`.
+- Waste search API: `GET /earth/waste/search` on [junctionBack](https://github.com/ancqit/junctionBack) (Mongo `waste_archive` + crawler helper)
+- i18n follows jtoday: `core/i18n/translations.ts` (`hi` / `en`), default Hindi
 
 ## Local
 
@@ -18,16 +21,10 @@ npm start
 
 Proxy: `/api` → junctionBack.
 
-## Style guide (for humans + agents)
+## Desks
 
-- Site: **Style** in the top nav opens the full 11-section brand book under `/style` (still on jEarth — Earth / Guide / etc. stay one click away). Deep links: `/style#color`, `#type`, `#components`, `#agents`
-- Standalone mirror: `/brand-book/index.html` · prose: `/brand-book/JUNCTION-BRAND-BOOK.md` · raw: `/style.md`
-- Covers principles, tokens, Get/map controls, branding builds, agent checklist
-
-## Guidebook
-
-`/guide` plus chapters on types (wet, dry, sanitary, hazardous, e-waste, C&D), how to check waste, disposal, household SOP, compost, prevention, rules/colour codes, workplaces. `/sort` is a 15-item checking lab. `/heroes` visits waste-hero countries.
-
-## Mushrooms
-
-`/mushrooms` — bay cameras, yield ranges, book bags as junctionBack orders (`source: junction.today`).
+| Desk | Routes | Job |
+|------|--------|-----|
+| Waste | `/`, `/guide`, `/sort`, `/heroes`, `/nearby` | Search + educate on waste |
+| Grow | `/mushrooms` | Farm cameras + bag booking |
+| Style | `/style` | Brand book (shared, not a desk product) |
