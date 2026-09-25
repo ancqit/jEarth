@@ -1,12 +1,15 @@
 # jEarth
 
-Junction earth desk: a **Google-like waste search** (item → waste type + how to dispose, Hindi/English) backed by a **Mongo archive** that a crawler helper updates, plus the full **waste guidebook**, **mushroom farm**, and **Junction style guide**.
+Junction earth is **two desks** (separation of concerns):
+
+1. **Waste search** (`/`) — Google-like archive search: item → waste type + how to dispose (Hindi/English). Guide, check lab, heroes, nearby belong here.
+2. **Mushroom farm** (`/mushrooms`) — watch bays, book grow bags via junctionBack. Separate product surface.
+
+Shared chrome only: style book (`/style`), language toggle, junction.today link.
 
 - Angular 19 frontend (`frontend/`)
-- Search API: `GET /earth/waste/search?q=&lang=` on [junctionBack](https://github.com/ancqit/junctionBack) (Mongo `waste_archive`)
-- Crawler helper: `python -m scripts.waste_archive_crawler` or `POST /internal/jobs/waste-archive-crawl` (cron + `X-Cron-Secret`)
-- i18n follows the jtoday protocol: `core/i18n/translations.ts` (`hi` / `en`), default Hindi
-- Bundled seed archive is an offline fallback if the API is down
+- Waste search API: `GET /earth/waste/search` on [junctionBack](https://github.com/ancqit/junctionBack) (Mongo `waste_archive` + crawler helper)
+- i18n follows jtoday: `core/i18n/translations.ts` (`hi` / `en`), default Hindi
 
 ## Local
 
@@ -18,10 +21,10 @@ npm start
 
 Proxy: `/api` → junctionBack.
 
-## Homepage
+## Desks
 
-Centered search box. Results look like a SERP: title, source URL, snippet, waste type, disposal steps. Data comes from Mongo; the crawler seeds household items, refreshes curated Wikipedia pages, and enriches with DuckDuckGo abstracts.
-
-## Guidebook
-
-`/guide`, `/sort`, `/heroes` unchanged.
+| Desk | Routes | Job |
+|------|--------|-----|
+| Waste | `/`, `/guide`, `/sort`, `/heroes`, `/nearby` | Search + educate on waste |
+| Grow | `/mushrooms` | Farm cameras + bag booking |
+| Style | `/style` | Brand book (shared, not a desk product) |
