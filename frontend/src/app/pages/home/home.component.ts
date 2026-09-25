@@ -1,39 +1,38 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { GithubRepo, PublicApisService, WikiSummary, WeatherNow } from '../../core/public-apis.service';
-import { GUIDE_ARTICLES } from '../../data/catalog';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
+import { searchWasteArchive, WasteArchiveEntry } from '../../data/waste-archive';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
-  private readonly publicApis = inject(PublicApisService);
-  readonly chapters = GUIDE_ARTICLES;
-  readonly wiki = signal<WikiSummary | null>(null);
-  readonly climate = signal<WeatherNow | null>(null);
-  readonly repos = signal<GithubRepo[]>([]);
+export class HomeComponent {
+  private readonly i18n = inject(I18nService);
 
-  ngOnInit(): void {
-    this.publicApis.wiki('Waste_management').subscribe((row) => this.wiki.set(row));
-    this.publicApis.climate(12.9716, 77.5946).subscribe((row) => this.climate.set(row));
-    forkJoin({
-      waste: this.publicApis.githubRepos('topic:recycling topic:waste-management'),
-      compost: this.publicApis.githubRepos('compost mushroom cultivation'),
-    }).subscribe(({ waste, compost }) => {
-      const seen = new Set<number>();
-      const merged: GithubRepo[] = [];
-      for (const repo of [...waste, ...compost]) {
-        if (seen.has(repo.id)) {
-          continue;
-        }
-        seen.add(repo.id);
-        merged.push(repo);
-      }
-      this.repos.set(merged.slice(0, 8));
-    });
+  readonly query = signal('');
+  readonly results = computed(() => searchWasteArchive(this.query()));
+
+  onSearch(event: Event): void {
+    this.query.set((event.target as HTMLInputElement).value);
+  }
+
+  clearSearch(): void {
+    this.query.set('');
+  }
+
+  nameOf(entry: WasteArchiveEntry): string {
+    return this.i18n.lang() === 'hi' ? entry.nameHi : entry.nameEn;
+  }
+
+  disposeOf(entry: WasteArchiveEntry): string[] {
+    return this.i18n.lang() === 'hi' ? entry.disposeHi : entry.disposeEn;
+  }
+
+  streamKey(entry: WasteArchiveEntry): string {
+    return `stream.${entry.stream}`;
   }
 }
