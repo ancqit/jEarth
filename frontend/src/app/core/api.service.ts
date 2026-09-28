@@ -21,6 +21,15 @@ export class ApiService {
     });
   }
 
+  getBlob(path: string, params?: Record<string, string>, options?: ApiRequestOptions): Observable<Blob> {
+    return this.http.get(this.url(path), {
+      params: new HttpParams({ fromObject: params ?? {} }),
+      context: options?.context,
+      headers: options?.headers ? new HttpHeaders(options.headers) : undefined,
+      responseType: 'blob',
+    });
+  }
+
   post<T>(path: string, body: unknown, options?: ApiRequestOptions): Observable<T> {
     return this.http.post<T>(this.url(path), body, {
       context: options?.context,

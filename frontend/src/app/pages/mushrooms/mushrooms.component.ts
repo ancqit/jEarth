@@ -10,7 +10,7 @@ import {
   SearchableSelectComponent,
 } from '../../components/searchable-select/searchable-select.component';
 import { EarthApartment, EarthFarmApi, EarthGrower } from '../../core/earth-farm.api';
-import { downloadFarmOrderPdf } from '../../core/farm-order-pdf';
+import { OrderBillService } from '../../core/order-bill';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { LocationsApi } from '../../core/locations.api';
 import { OrdersApi } from '../../core/orders.api';
@@ -35,6 +35,7 @@ export class MushroomsComponent implements OnInit {
   private readonly farmApi = inject(EarthFarmApi);
   private readonly locations = inject(LocationsApi);
   private readonly orders = inject(OrdersApi);
+  private readonly orderBill = inject(OrderBillService);
   readonly i18n = inject(I18nService);
 
   readonly tab = signal<FarmTab>('growers');
@@ -246,19 +247,7 @@ export class MushroomsComponent implements OnInit {
           this.submitting.set(false);
           this.orderOpen.set(false);
           this.message.set(this.i18n.t('farm.orderOk', { number: order.order_number }));
-          downloadFarmOrderPdf({
-            orderNumber: order.order_number || order.id,
-            customerName: name,
-            apartmentName: apartment.name,
-            flatNumber: flat,
-            growerName: grower.name,
-            cropName: grower.crop_name,
-            units: qty,
-            unitPrice: grower.unit_price,
-            currency: grower.currency || 'INR',
-            area: this.areaLabel(),
-            createdAt: order.created_at || new Date().toISOString(),
-          });
+          this.orderBill.download(order).catch(() => this.error.set(this.i18n.t('farm.billError')));
         },
         error: () => {
           this.submitting.set(false);
