@@ -1,132 +1,200 @@
 <section class="hero">
-  <p class="kicker">Mushroom farm · grow desk</p>
-  <h1>Watch the bags. Book the flush.</h1>
-  <p class="lede">
-    This is jEarth’s second desk — separate from waste search. Cameras sit in inoculation, pinning,
-    harvest, and the straw yard. Yield is a range, not a promise. Booking creates a pending cash
-    order on junctionBack so the farm inbox sees it the same way junction.today orders arrive.
-  </p>
+  <p class="kicker">{{ 'farm.kicker' | t }}</p>
+  <h1>{{ 'farm.title' | t }}</h1>
+  <p class="lede">{{ 'farm.lede' | t }}</p>
 </section>
 
-<p class="note">{{ catalogNote() }}</p>
-
-@if (climate(); as weather) {
-  <aside class="card climate">
-    <p class="kicker">Open-Meteo · {{ climatePlace() }}</p>
-    <p class="yield">{{ weather.temperature }}°C · {{ weather.humidity }}% RH · rain {{ weather.precipitation }} mm</p>
-    @if (weather.pm25 != null) {
-      <p class="muted">PM2.5 {{ weather.pm25 }} µg/m³ (open burning nearby will show up here).</p>
-    }
-    <p>{{ weather.fruitingHint }}</p>
-  </aside>
-}
-
-@if (gbifCount() != null) {
-  <p class="muted gbif">
-    GBIF has {{ gbifCount() | number }} occurrence records for <em>Pleurotus ostreatus</em> — the same oyster group we sell as bags.
-  </p>
-}
-
-<section class="cameras card">
-  <div class="cam-main">
-    <img [src]="selectedCam().image" [alt]="selectedCam().title" />
-    <p class="live"><span></span> Live bay · {{ selectedCam().bay }}</p>
-  </div>
-  <div class="cam-meta">
-    <p class="kicker">{{ selectedCam().stage }}</p>
-    <h2>{{ selectedCam().title }}</h2>
-    <p>{{ selectedCam().note }}</p>
-    <div class="thumbs">
-      @for (cam of cameras; track cam.id) {
-        <button type="button" [class.on]="cam.id === activeCam()" (click)="activeCam.set(cam.id)">
-          {{ cam.title }}
-        </button>
-      }
-    </div>
-  </div>
-</section>
-
-<section class="shop">
-  <div class="bags">
-    @for (bag of bags(); track bag.id) {
-      <button
-        type="button"
-        class="card bag"
-        [class.on]="bag.id === selectedId()"
-        (click)="selectedId.set(bag.id)"
-      >
-        @if (bag.image) {
-          <img [src]="bag.image" alt="" />
-        }
-        <p class="kicker">{{ bag.variety }}</p>
-        <h3>{{ bag.name }}</h3>
-        <p>{{ bag.description }}</p>
-        <p class="price">{{ bag.currency }} {{ bag.price }} · {{ bag.expectedYieldKg[0] }}–{{ bag.expectedYieldKg[1] }} kg</p>
-      </button>
-    }
-  </div>
-
-  <form class="card book" (submit)="$event.preventDefault(); book()">
-    <p class="kicker">Reserve bags</p>
-    <h2>{{ selectedBag().name }}</h2>
-    <p class="yield">{{ yieldText() }}</p>
-    <p class="muted">Substrate: {{ selectedBag().substrate }} · stock {{ selectedBag().stock_quantity }}</p>
-
-    <label class="field">
-      <span>Bags</span>
-      <input
-        type="number"
-        min="1"
-        [ngModel]="quantity()"
-        (ngModelChange)="setQuantity($event)"
-        name="qty"
-      />
-    </label>
-    <label class="field">
-      <span>Your name</span>
-      <input
-        type="text"
-        required
-        [ngModel]="customerName()"
-        (ngModelChange)="customerName.set($event)"
-        name="name"
-        autocomplete="name"
-      />
-    </label>
-    <label class="field">
-      <span>Email (optional)</span>
-      <input
-        type="email"
-        [ngModel]="customerEmail()"
-        (ngModelChange)="customerEmail.set($event)"
-        name="email"
-        autocomplete="email"
-      />
-    </label>
-    <button class="btn btn-primary" type="submit" [disabled]="submitting()">
-      {{ submitting() ? 'Booking…' : 'Book on junctionBack' }}
+<section class="area-bar card">
+  <p class="kicker">{{ 'farm.areaKicker' | t }}</p>
+  <div class="area-row">
+    <button type="button" class="area-pick" (click)="openCityPicker()">
+      <span class="area-label">{{ 'farm.city' | t }}</span>
+      <strong>{{ city() || ('farm.pickCity' | t) }}</strong>
     </button>
-    @if (bookingMessage()) {
-      <p class="ok">{{ bookingMessage() }}</p>
-    }
-    @if (bookingError()) {
-      <p class="err">{{ bookingError() }}</p>
-    }
-  </form>
+    <button type="button" class="area-pick" (click)="openLocalityPicker()" [disabled]="!city()">
+      <span class="area-label">{{ 'farm.locality' | t }}</span>
+      <strong>{{ locality() || ('farm.pickLocality' | t) }}</strong>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="searchArea()" [disabled]="!areaLabel() || searching()">
+      {{ searching() ? ('farm.searching' | t) : ('farm.search' | t) }}
+    </button>
+  </div>
+  @if (areaLabel()) {
+    <p class="area-hint">{{ 'farm.areaHint' | t: { area: areaLabel() } }}</p>
+  }
 </section>
 
-@if (wild().length) {
-  <section class="wild">
-    <p class="kicker">iNaturalist research-grade oysters</p>
-    <h2 class="strip">Wild cousins, not the farm CCTV — Creative Commons photos from a public API.</h2>
-    <div class="wild-grid">
-      @for (shot of wild(); track shot.id) {
-        <a class="card shot" [href]="shot.page" target="_blank" rel="noreferrer">
-          <img [src]="shot.url" [alt]="shot.taxon" />
-          <strong>{{ shot.taxon }}</strong>
-          <span>{{ shot.place }} · {{ shot.observed }}</span>
-        </a>
+@if (error()) {
+  <p class="error-message">{{ error() }}</p>
+}
+@if (message()) {
+  <p class="status-message">{{ message() }}</p>
+}
+
+@if (growers().length || apartments().length) {
+  <div class="tabs" role="tablist">
+    <button
+      type="button"
+      role="tab"
+      class="tab"
+      [class.on]="tab() === 'growers'"
+      (click)="setTab('growers')"
+    >
+      {{ 'farm.tabGrowers' | t }} ({{ growers().length }})
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="tab"
+      [class.on]="tab() === 'apartments'"
+      (click)="setTab('apartments')"
+    >
+      {{ 'farm.tabApartments' | t }} ({{ apartments().length }})
+    </button>
+  </div>
+
+  @if (tab() === 'growers') {
+    <div class="split">
+      <ul class="list">
+        @for (grower of growers(); track grower.id) {
+          <li>
+            <button
+              type="button"
+              class="card list-item"
+              [class.on]="selectedGrowerId() === grower.id"
+              (click)="selectGrower(grower.id)"
+            >
+              <strong>{{ grower.name }}</strong>
+              <span>{{ grower.crop_name }} · {{ grower.locality || grower.area }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+      @if (selectedGrower(); as grower) {
+        <article class="card detail">
+          <p class="kicker">{{ 'farm.cycle' | t }}</p>
+          <h2>{{ grower.name }}</h2>
+          <p class="stage">{{ stageLabel(grower.cycle_stage) }}</p>
+          <p>{{ 'farm.cycleDay' | t: { day: grower.cycle_day, crop: grower.crop_name } }}</p>
+          <p class="muted">
+            {{ 'farm.unitsPrice' | t: { units: grower.units_available, price: grower.unit_price, currency: grower.currency } }}
+          </p>
+          @if (grower.notes) {
+            <p>{{ grower.notes }}</p>
+          }
+        </article>
       }
     </div>
-  </section>
+  } @else {
+    <ul class="apt-grid">
+      @for (apt of apartments(); track apt.id) {
+        <li>
+          <button type="button" class="card apt" (click)="openApartment(apt)">
+            <strong>{{ apt.name }}</strong>
+            <span>{{ apt.address || apt.area }}</span>
+            <em>{{ 'farm.orderFromApt' | t }}</em>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+}
+
+<p class="admin-link">
+  <a routerLink="/mushrooms/admin">{{ 'farm.adminLink' | t }}</a>
+  ·
+  <a routerLink="/mushrooms/dump">{{ 'farm.dumpLink' | t }}</a>
+</p>
+
+@if (activePicker() === 'city') {
+  <app-location-picker-modal
+    [title]="'farm.pickCity' | t"
+    [options]="cities()"
+    [loading]="citiesLoading()"
+    [emptyMessage]="'farm.noCities' | t"
+    [searchPlaceholder]="'farm.searchCity' | t"
+    [allowAdd]="false"
+    (picked)="onCityPicked($event)"
+    (dismissed)="onPickerDismiss()"
+  />
+}
+
+@if (activePicker() === 'locality') {
+  <app-location-picker-modal
+    [title]="'farm.pickLocality' | t"
+    [options]="localities()"
+    [loading]="localitiesLoading()"
+    [emptyMessage]="'farm.noLocalities' | t"
+    [searchPlaceholder]="'farm.searchLocality' | t"
+    [allowAdd]="false"
+    (picked)="onLocalityPicked($event)"
+    (dismissed)="onPickerDismiss()"
+  />
+}
+
+@if (flatOpen() && orderApartment(); as apt) {
+  <div class="picker-backdrop" role="dialog" aria-modal="true" (click)="closeFlat()">
+    <section class="picker-card flat-card" (click)="$event.stopPropagation()">
+      <header class="picker-header">
+        <h2 class="picker-title">{{ apt.name }}</h2>
+        <button type="button" class="picker-close" (click)="closeFlat()">×</button>
+      </header>
+      <div class="picker-body">
+        <label class="field">
+          <span>{{ 'farm.flatNumber' | t }}</span>
+          <input type="text" [ngModel]="flatNumber()" (ngModelChange)="flatNumber.set($event)" />
+        </label>
+        <button type="button" class="btn btn-primary" (click)="confirmFlat()">
+          {{ 'farm.continueOrder' | t }}
+        </button>
+      </div>
+    </section>
+  </div>
+}
+
+@if (orderOpen() && orderApartment(); as apt) {
+  <div class="picker-backdrop" role="dialog" aria-modal="true" (click)="closeOrder()">
+    <section class="picker-card order-card" (click)="$event.stopPropagation()">
+      <header class="picker-header">
+        <h2 class="picker-title">{{ 'farm.placeOrder' | t }}</h2>
+        <button type="button" class="picker-close" (click)="closeOrder()">×</button>
+      </header>
+      <div class="picker-body order-body">
+        <p class="muted">{{ apt.name }} · {{ 'farm.flatNumber' | t }} {{ flatNumber() }}</p>
+        <label class="field">
+          <span>{{ 'farm.yourName' | t }}</span>
+          <input type="text" [ngModel]="customerName()" (ngModelChange)="customerName.set($event)" />
+        </label>
+        <label class="field">
+          <span>{{ 'farm.selectGrower' | t }}</span>
+          <app-searchable-select
+            [options]="growerOptions()"
+            [value]="orderGrowerId()"
+            [allLabel]="'farm.pickGrower' | t"
+            [placeholder]="'farm.searchGrower' | t"
+            [ariaLabel]="'farm.selectGrower' | t"
+            [allowClear]="false"
+            (valueChange)="onOrderGrowerChange($event)"
+          />
+        </label>
+        <label class="field">
+          <span>{{ 'farm.units' | t }}</span>
+          <input type="number" min="1" [ngModel]="units()" (ngModelChange)="setUnits($event)" />
+        </label>
+        @if (orderGrower(); as g) {
+          <p class="total">
+            {{ 'farm.total' | t: { total: orderTotal().toFixed(2), currency: g.currency } }}
+          </p>
+        }
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="submitting() || !orderGrower()"
+          (click)="placeOrder()"
+        >
+          {{ submitting() ? ('farm.ordering' | t) : ('farm.confirmOrder' | t) }}
+        </button>
+      </div>
+    </section>
+  </div>
 }

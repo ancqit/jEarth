@@ -1,0 +1,58 @@
+.hero {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+.lede {
+  margin: 0;
+  color: var(--ink-soft);
+  max-width: 40rem;
+}
+
+.block {
+  padding: 1.1rem 1.15rem;
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.block h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.field span {
+  font: 700 0.7rem/1.2 inherit;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(25, 75, 49, 0.7);
+}
+
+.field input,
+.field select {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d8dbd6;
+  border-radius: 0.75rem;
+  background: #fff;
+  font: inherit;
+}
+
+.error-message {
+  color: var(--danger, #92400e);
+}
+
+.status-message {
+  color: var(--forest-mid);
+}
