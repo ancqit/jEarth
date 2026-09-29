@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+import { Observable, catchError, finalize, map, of, shareReplay, tap, throwError } from 'rxjs';
 import { resolveApiBaseUrl } from './api.config';
 
 export interface SessionResponse {
@@ -18,6 +18,7 @@ export class SessionService {
   private refreshTimer?: ReturnType<typeof setTimeout>;
   private readonly tokenSignal = signal<string | null>(null);
   private expiresAtMs = 0;
+  private inflight?: Observable<void>;
 
   readonly accessToken = this.tokenSignal.asReadonly();
 
@@ -29,11 +30,16 @@ export class SessionService {
   }
 
   createSession(): Observable<void> {
-    return this.http.post<SessionResponse>(this.url('/session'), {}).pipe(
-      tap((response) => this.applySession(response)),
-      map(() => undefined),
-      catchError((error) => throwError(() => error)),
-    );
+    if (!this.inflight) {
+      this.inflight = this.http.post<SessionResponse>(this.url('/session'), {}).pipe(
+        tap((response) => this.applySession(response)),
+        map(() => undefined),
+        catchError((error) => throwError(() => error)),
+        finalize(() => (this.inflight = undefined)),
+        shareReplay({ bufferSize: 1, refCount: false }),
+      );
+    }
+    return this.inflight;
   }
 
   refreshSession(): Observable<void> {

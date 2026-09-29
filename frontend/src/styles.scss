@@ -1,6 +1,7 @@
-﻿@import './styles/junction-tokens.css';
+﻿@use 'sass:meta';
+@import './styles/junction-tokens.css';
 @import './styles/junction-components.css';
-@import './styles/brand-book-page.scss';
+@include meta.load-css('./styles/brand-book-page');
 
 :root {
   color-scheme: light;

@@ -46,7 +46,7 @@
       @for (hit of results(); track hit.id) {
         <li class="serp-item">
           <div class="serp-top">
-            @if (hit.sources[0]?.url; as href) {
+            @if (hit.sources.at(0)?.url; as href) {
               <a class="serp-url" [href]="href" target="_blank" rel="noopener noreferrer">{{
                 hit.sources[0].title || href
               }}</a>
@@ -56,7 +56,7 @@
             <span class="type-pill">{{ streamKey(hit) | t }}</span>
           </div>
           <h2 class="serp-title">
-            @if (hit.sources[0]?.url; as href) {
+            @if (hit.sources.at(0)?.url; as href) {
               <a [href]="href" target="_blank" rel="noopener noreferrer">{{ hit.title }}</a>
             } @else {
               {{ hit.title }}
