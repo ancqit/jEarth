@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter, map, startWith } from 'rxjs';
 import { I18nService } from './core/i18n/i18n.service';
 import { TranslatePipe } from './core/i18n/translate.pipe';
+import { TabPresenceService } from './core/tab-presence.service';
 
 /** jEarth is two desks: waste search (+ guide tools) and mushroom farm. */
 export type EarthDesk = 'waste' | 'grow' | 'style';
@@ -17,6 +18,10 @@ export type EarthDesk = 'waste' | 'grow' | 'style';
 export class AppComponent {
   readonly year = new Date().getFullYear();
   readonly i18n = inject(I18nService);
+
+  constructor() {
+    inject(TabPresenceService).start();
+  }
 
   private readonly router = inject(Router);
   private readonly url = toSignal(
