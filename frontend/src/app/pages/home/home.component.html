@@ -54,6 +54,9 @@
               <span class="serp-url">junction.earth/archive</span>
             }
             <span class="type-pill">{{ streamKey(hit) | t }}</span>
+            @if (hit.origin === 'web') {
+              <span class="type-pill learned-pill" [attr.title]="'home.learnedHint' | t">{{ 'home.learnedPill' | t }}</span>
+            }
           </div>
           <h2 class="serp-title">
             @if (hit.sources.at(0)?.url; as href) {

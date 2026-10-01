@@ -16,6 +16,8 @@ export interface WasteSearchHit {
   dispose: string[];
   sources: WasteSearchSource[];
   score?: number | null;
+  /** `web` when the backend learned this entry from Wikipedia on a missed search. */
+  origin?: string | null;
 }
 
 export interface WasteSearchResponse {
