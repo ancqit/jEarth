@@ -40,7 +40,10 @@ export const TRANSLATIONS: Record<AppLang, TranslationDict> = {
     'home.emptyHint': 'ऊपर खोजें — संग्रह में घरेलू चीज़ें और उनके निपटान के तरीके हैं।',
     'home.searching': 'खोज जारी है…',
     'home.resultCount': '{{count}} परिणाम · “{{query}}”',
-    'home.noMatch': 'कोई मेल नहीं। और साधारण शब्द आज़माएँ, या गाइड खोलें।',
+    'home.noMatch':
+      'अभी कोई मेल नहीं। हमने यह खोज नोट कर ली है — हमारा क्रॉलर इसे वेब पर ढूँढेगा। तब तक और साधारण शब्द आज़माएँ, या गाइड खोलें।',
+    'home.learnedPill': 'वेब से सीखा',
+    'home.learnedHint': 'विकिपीडिया से अपने-आप जोड़ा गया — अपने शहर के नियम भी देखें।',
     'home.typeLabel': 'कचरे का प्रकार',
     'home.disposeLabel': 'निपटान के तरीके',
     'home.openGuide': 'पूरी गाइड खोलें',
@@ -159,7 +162,10 @@ export const TRANSLATIONS: Record<AppLang, TranslationDict> = {
     'home.emptyHint': 'Search above — the archive holds household items and how to dispose of them.',
     'home.searching': 'Searching…',
     'home.resultCount': '{{count}} results · “{{query}}”',
-    'home.noMatch': 'No match. Try a simpler word, or open the full guide.',
+    'home.noMatch':
+      'No match yet. We have noted this search and our crawler will look for it on the web. Meanwhile, try a simpler word or open the full guide.',
+    'home.learnedPill': 'Learned from the web',
+    'home.learnedHint': 'Added automatically from Wikipedia — check your city’s rules too.',
     'home.typeLabel': 'Waste type',
     'home.disposeLabel': 'Ways to get rid of it',
     'home.openGuide': 'Open the full guide',
