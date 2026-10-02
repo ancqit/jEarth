@@ -31,12 +31,6 @@
       <a routerLink="/sort" routerLinkActive="on">{{ 'nav.sort' | t }}</a>
       <a routerLink="/heroes" routerLinkActive="on">{{ 'nav.heroes' | t }}</a>
       <a routerLink="/nearby" routerLinkActive="on">{{ 'nav.nearby' | t }}</a>
-      <a routerLink="/home-trash" routerLinkActive="on" class="trash-link"
-        >{{ 'trash.nav' | t }}
-        @if (homeTrash.count()) {
-          <span class="trash-count">{{ homeTrash.count() }}</span>
-        }
-      </a>
     </nav>
   } @else if (desk() === 'grow') {
     <nav class="tools" aria-label="Mushroom farm">
@@ -78,6 +72,9 @@
 <main [class.main--style]="styleBookOpen()" [attr.data-desk]="desk()">
   <router-outlet />
 </main>
+@if (!styleBookOpen()) {
+  <app-trash-bin />
+}
 @if (contactSession.promptOpen()) {
   <app-mpin-modal />
 }

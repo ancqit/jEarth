@@ -92,24 +92,6 @@ nav {
   margin-left: 0.35rem;
 }
 
-.trash-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.trash-count {
-  min-width: 1.15rem;
-  padding: 0.05rem 0.35rem;
-  border-radius: 999px;
-  background: var(--forest);
-  color: var(--gold);
-  font-size: 0.68rem;
-  font-weight: 800;
-  line-height: 1.4;
-  text-align: center;
-}
-
 .header-end {
   display: flex;
   align-items: center;

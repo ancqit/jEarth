@@ -46,7 +46,7 @@ export class HomeTrashStore {
       const token = this.session.token();
       untracked(() => {
         if (token) {
-          this.load();
+          this.load(true);
         } else {
           this.items.set([]);
           this.loaded.set(false);
@@ -63,7 +63,8 @@ export class HomeTrashStore {
     return this.busyIds().has(entryId);
   }
 
-  load(): void {
+  /** `background` loads (on unlock / page open) lock quietly on 401 instead of prompting. */
+  load(background = false): void {
     if (!this.session.unlocked()) {
       return;
     }
@@ -76,7 +77,13 @@ export class HomeTrashStore {
           this.loaded.set(true);
           this.error.set(null);
         },
-        error: (err: unknown) => this.fail(err, () => this.load()),
+        error: (err: unknown) => {
+          if (background && err instanceof HttpErrorResponse && err.status === 401) {
+            this.session.logout();
+            return;
+          }
+          this.fail(err, () => this.load());
+        },
       });
   }
 
