@@ -2,6 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
+import { MpinModalComponent } from './components/mpin-modal/mpin-modal.component';
+import { ContactSessionService } from './core/contact-session.service';
+import { HomeTrashStore } from './core/home-trash.store';
 import { I18nService } from './core/i18n/i18n.service';
 import { TranslatePipe } from './core/i18n/translate.pipe';
 import { TabPresenceService } from './core/tab-presence.service';
@@ -11,13 +14,15 @@ export type EarthDesk = 'waste' | 'grow' | 'style';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe, MpinModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   readonly year = new Date().getFullYear();
   readonly i18n = inject(I18nService);
+  readonly contactSession = inject(ContactSessionService);
+  readonly homeTrash = inject(HomeTrashStore);
 
   constructor() {
     inject(TabPresenceService).start();

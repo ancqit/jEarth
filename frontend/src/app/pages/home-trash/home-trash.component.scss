@@ -1,0 +1,247 @@
+:host {
+  display: block;
+  width: min(44rem, 100%);
+  margin: 0 auto 2rem;
+}
+
+.trash-hero {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem 0 1.25rem;
+  text-align: center;
+  justify-items: center;
+}
+
+.trash-hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.trash-hero .lede {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.trash-locked,
+.trash-empty {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  padding: 1.75rem 1.25rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 1.1rem;
+  background: var(--surface);
+  text-align: center;
+}
+
+.trash-locked h2 {
+  margin: 0;
+  color: var(--forest);
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.trash-locked p,
+.trash-empty p {
+  margin: 0;
+  max-width: 28rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.trash-lock-icon {
+  font-size: 1.6rem;
+}
+
+.trash-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.trash-who {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.trash-who strong {
+  color: var(--forest);
+}
+
+.trash-who span {
+  color: var(--mute);
+  font-size: 0.85rem;
+}
+
+.trash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.trash-status,
+.trash-error {
+  margin: 0 0 1rem;
+  color: var(--mute);
+  text-align: center;
+}
+
+.trash-error {
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.7rem;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.trash-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.1rem;
+}
+
+.trash-chip {
+  padding: 0.3rem 0.7rem;
+  border: 0;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  background: var(--stream-color);
+  color: #fff;
+  font: 700 0.8rem/1.3 var(--font-ui);
+  text-decoration: none;
+}
+
+[data-stream='wet'] {
+  --stream-color: #2e7d32;
+}
+[data-stream='dry'] {
+  --stream-color: #1565c0;
+}
+[data-stream='sanitary'] {
+  --stream-color: #ad1457;
+}
+[data-stream='ewaste'] {
+  --stream-color: #5e35b1;
+}
+[data-stream='hazardous'] {
+  --stream-color: #c62828;
+}
+[data-stream='construction'] {
+  --stream-color: #6d4c41;
+}
+[data-stream='reject'] {
+  --stream-color: #546e7a;
+}
+
+.trash-group {
+  margin-bottom: 1.25rem;
+  scroll-margin-top: 5rem;
+}
+
+.trash-group-title {
+  margin: 0 0 0.55rem;
+  padding-left: 0.65rem;
+  border-left: 4px solid var(--stream-color);
+  color: var(--stream-color);
+  font: 700 1.1rem/1.3 var(--font-ui);
+}
+
+.trash-group-title span {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.trash-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.trash-item {
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: var(--surface-solid);
+}
+
+.trash-item-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.trash-item h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.trash-other {
+  margin: 0.1rem 0 0;
+  color: var(--mute);
+  font-size: 0.82rem;
+}
+
+.trash-remove {
+  flex-shrink: 0;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: 600 0.78rem/1.2 var(--font-ui);
+  cursor: pointer;
+}
+
+.trash-remove:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.trash-steps {
+  margin: 0.5rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.trash-source {
+  display: inline-block;
+  margin-top: 0.4rem;
+  color: rgba(25, 75, 49, 0.72);
+  font-size: 0.78rem;
+  word-break: break-all;
+}
+
+.trash-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.trash-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}

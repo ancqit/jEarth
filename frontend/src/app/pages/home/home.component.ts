@@ -2,6 +2,7 @@ import { Component, DestroyRef, computed, effect, inject, signal, untracked } fr
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged, of, switchMap, tap } from 'rxjs';
+import { HomeTrashStore } from '../../core/home-trash.store';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { WasteArchiveApi, WasteSearchHit } from '../../core/waste-archive.api';
@@ -16,6 +17,7 @@ export class HomeComponent {
   private readonly i18n = inject(I18nService);
   private readonly wasteApi = inject(WasteArchiveApi);
   private readonly destroyRef = inject(DestroyRef);
+  readonly homeTrash = inject(HomeTrashStore);
   private readonly query$ = new Subject<string>();
 
   readonly query = signal('');

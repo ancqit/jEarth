@@ -34,6 +34,11 @@ export const routes: Routes = [
     data: { book: 'style' },
   },
   {
+    path: 'home-trash',
+    loadComponent: () =>
+      import('./pages/home-trash/home-trash.component').then((m) => m.HomeTrashComponent),
+  },
+  {
     path: 'sort',
     loadComponent: () => import('./pages/sort-lab/sort-lab.component').then((m) => m.SortLabComponent),
   },

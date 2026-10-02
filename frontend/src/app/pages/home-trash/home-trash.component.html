@@ -1,0 +1,105 @@
+<section class="hero trash-hero">
+  <p class="kicker">{{ 'trash.kicker' | t }}</p>
+  <h1>{{ 'trash.title' | t }}</h1>
+  <p class="lede">{{ 'trash.lede' | t }}</p>
+</section>
+
+@if (!session.unlocked()) {
+  <section class="trash-locked">
+    <span class="trash-lock-icon" aria-hidden="true">🔒</span>
+    <h2>{{ 'trash.lockedTitle' | t }}</h2>
+    <p>{{ 'trash.lockedLede' | t }}</p>
+    <button type="button" class="btn btn-primary" (click)="unlock()">{{ 'trash.unlock' | t }}</button>
+  </section>
+} @else {
+  <section class="trash-bar">
+    <div class="trash-who">
+      <strong>{{ session.name() || session.phone() }}</strong>
+      @if (store.count()) {
+        <span>{{ 'trash.summary' | t: { items: store.count(), streams: streamCount() } }}</span>
+      }
+    </div>
+    <div class="trash-actions">
+      <button type="button" class="btn btn-primary" [disabled]="downloading()" (click)="download()">
+        {{ (downloading() ? 'trash.downloading' : 'trash.download') | t }}
+      </button>
+      <button type="button" class="btn btn-ghost" (click)="logout()">{{ 'trash.logout' | t }}</button>
+    </div>
+  </section>
+
+  @if (store.error()) {
+    <p class="trash-error" role="alert">
+      {{ store.error() === 'network' ? ('trash.error' | t) : store.error() }}
+    </p>
+  }
+
+  @if (store.loading() && !store.loaded()) {
+    <p class="trash-status">{{ 'trash.loading' | t }}</p>
+  } @else if (!store.count()) {
+    <section class="trash-empty">
+      <p>{{ 'trash.empty' | t }}</p>
+      <a class="btn btn-primary" routerLink="/">{{ 'trash.searchCta' | t }}</a>
+    </section>
+  } @else {
+    <div class="trash-chips">
+      @for (group of groups(); track group.stream) {
+        <button type="button" class="trash-chip" [attr.data-stream]="group.stream" (click)="scrollTo(group.stream)">
+          {{ 'stream.' + group.stream | t }} · {{ group.items.length }}
+        </button>
+      }
+    </div>
+
+    @for (group of groups(); track group.stream) {
+      <section class="trash-group" [attr.data-stream]="group.stream" [id]="'stream-' + group.stream">
+        <h2 class="trash-group-title">
+          {{ 'stream.' + group.stream | t }} <span>· {{ group.items.length }}</span>
+        </h2>
+        <ul class="trash-list">
+          @for (item of group.items; track item.entry_id) {
+            <li class="trash-item">
+              <div class="trash-item-head">
+                <div>
+                  <h3>{{ title(item) }}</h3>
+                  @if (otherTitle(item); as other) {
+                    <p class="trash-other">{{ other }}</p>
+                  }
+                </div>
+                <button
+                  type="button"
+                  class="trash-remove"
+                  [disabled]="store.isBusy(item.entry_id)"
+                  [attr.aria-label]="'trash.removeAria' | t: { item: title(item) }"
+                  (click)="store.remove(item.entry_id)"
+                >
+                  {{ 'trash.remove' | t }}
+                </button>
+              </div>
+              @if (steps(item).length) {
+                <ol class="trash-steps">
+                  @for (step of steps(item); track $index) {
+                    <li>{{ step }}</li>
+                  }
+                </ol>
+              }
+              @if (item.sources.at(0)?.url; as href) {
+                <a class="trash-source" [href]="href" target="_blank" rel="noopener noreferrer">{{
+                  item.sources[0].title || href
+                }}</a>
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    <section class="trash-footer">
+      @if (confirmEmpty()) {
+        <span>{{ 'trash.emptyConfirm' | t }}</span>
+        <button type="button" class="btn btn-ghost trash-danger" (click)="empty()">{{ 'trash.emptyYes' | t }}</button>
+        <button type="button" class="btn btn-ghost" (click)="confirmEmpty.set(false)">{{ 'trash.emptyNo' | t }}</button>
+      } @else {
+        <button type="button" class="btn btn-ghost" (click)="confirmEmpty.set(true)">{{ 'trash.emptyAll' | t }}</button>
+      }
+    </section>
+  }
+}

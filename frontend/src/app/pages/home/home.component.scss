@@ -181,6 +181,38 @@
   margin-top: 0.2rem;
 }
 
+.trash-row {
+  margin-top: 0.55rem;
+}
+
+.trash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(25, 75, 49, 0.28);
+  border-radius: 999px;
+  background: #fffefb;
+  color: var(--forest);
+  font: 700 0.8rem/1.2 inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.trash-btn:hover:not(:disabled) {
+  background: var(--gold-soft);
+}
+
+.trash-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.trash-btn--in {
+  border-color: transparent;
+  background: rgba(25, 75, 49, 0.1);
+}
+
 .cta-row {
   display: flex;
   flex-wrap: wrap;
