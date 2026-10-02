@@ -1,0 +1,182 @@
+<div class="mpin-backdrop" role="dialog" aria-modal="true" [attr.aria-label]="'mpin.title' | t" (click)="close()">
+  <section class="mpin-card" (click)="$event.stopPropagation()">
+    <header class="mpin-header">
+      <div>
+        <p class="mpin-kicker">{{ 'trash.nav' | t }}</p>
+        <h2 class="mpin-title">
+          @switch (phase()) {
+            @case ('mpin') {
+              {{ 'mpin.title' | t }}
+            }
+            @case ('set_mpin') {
+              {{ 'mpin.setTitle' | t }}
+            }
+            @default {
+              {{ 'mpin.setupTitle' | t }}
+            }
+          }
+        </h2>
+      </div>
+      <button type="button" class="mpin-close" [attr.aria-label]="'mpin.close' | t" (click)="close()">×</button>
+    </header>
+
+    @if (session.promptReason() === 'expired' && phase() === 'mpin') {
+      <p class="mpin-note">{{ 'mpin.expired' | t }}</p>
+    }
+
+    @switch (phase()) {
+      @case ('mpin') {
+        <form class="mpin-form" (submit)="$event.preventDefault(); unlock()">
+          <p class="mpin-lede">{{ 'mpin.lede' | t }}</p>
+          <label>
+            <span>{{ 'mpin.phone' | t }}</span>
+            <input
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+91 98765 43210"
+              [ngModel]="phone()"
+              (ngModelChange)="phone.set($event)"
+              name="phone"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.mpin' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="password"
+              inputmode="numeric"
+              autocomplete="current-password"
+              maxlength="6"
+              placeholder="••••"
+              [ngModel]="mpin()"
+              (ngModelChange)="mpin.set($event)"
+              name="mpin"
+            />
+          </label>
+          @if (error()) {
+            <p class="mpin-error" role="alert">{{ error() }}</p>
+          }
+          <button type="submit" class="btn btn-primary mpin-submit" [disabled]="busy()">
+            {{ (busy() ? 'mpin.working' : 'mpin.unlock') | t }}
+          </button>
+          <button type="button" class="mpin-link" (click)="startSetup()">{{ 'mpin.firstTime' | t }}</button>
+        </form>
+      }
+      @case ('details') {
+        <form class="mpin-form" (submit)="$event.preventDefault(); sendOtp()">
+          <p class="mpin-lede">{{ 'mpin.setupLede' | t }}</p>
+          <label>
+            <span>{{ 'mpin.phone' | t }}</span>
+            <input
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+91 98765 43210"
+              [ngModel]="phone()"
+              (ngModelChange)="phone.set($event)"
+              name="phone"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.email' | t }}</span>
+            <input
+              type="email"
+              autocomplete="email"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
+              name="email"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.name' | t }}</span>
+            <input
+              type="text"
+              autocomplete="name"
+              [ngModel]="name()"
+              (ngModelChange)="name.set($event)"
+              name="name"
+            />
+          </label>
+          @if (hint()) {
+            <p class="mpin-hint">{{ hint() }}</p>
+          }
+          @if (error()) {
+            <p class="mpin-error" role="alert">{{ error() }}</p>
+          }
+          <button type="submit" class="btn btn-primary mpin-submit" [disabled]="busy()">
+            {{ (busy() ? 'mpin.working' : 'mpin.sendOtp') | t }}
+          </button>
+          <button type="button" class="mpin-link" (click)="backToMpin()">{{ 'mpin.haveMpin' | t }}</button>
+        </form>
+      }
+      @case ('otp') {
+        <form class="mpin-form" (submit)="$event.preventDefault(); confirmOtp()">
+          @if (hint()) {
+            <p class="mpin-hint">{{ hint() }}</p>
+          }
+          <label>
+            <span>{{ 'mpin.otp' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              maxlength="6"
+              placeholder="000000"
+              [ngModel]="otp()"
+              (ngModelChange)="otp.set($event)"
+              name="otp"
+            />
+          </label>
+          @if (error()) {
+            <p class="mpin-error" role="alert">{{ error() }}</p>
+          }
+          <button type="submit" class="btn btn-primary mpin-submit">{{ 'mpin.next' | t }}</button>
+          <button type="button" class="mpin-link" [disabled]="busy()" (click)="sendOtp()">
+            {{ 'mpin.resend' | t }}
+          </button>
+        </form>
+      }
+      @case ('set_mpin') {
+        <form class="mpin-form" (submit)="$event.preventDefault(); saveMpin()">
+          <p class="mpin-lede">{{ 'mpin.setLede' | t }}</p>
+          <label>
+            <span>{{ 'mpin.newMpin' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="password"
+              inputmode="numeric"
+              autocomplete="new-password"
+              maxlength="6"
+              [ngModel]="newMpin()"
+              (ngModelChange)="newMpin.set($event)"
+              name="newMpin"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.confirmMpin' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="password"
+              inputmode="numeric"
+              autocomplete="new-password"
+              maxlength="6"
+              [ngModel]="confirmMpin()"
+              (ngModelChange)="confirmMpin.set($event)"
+              name="confirmMpin"
+            />
+          </label>
+          @if (error()) {
+            <p class="mpin-error" role="alert">{{ error() }}</p>
+          }
+          <button type="submit" class="btn btn-primary mpin-submit" [disabled]="busy()">
+            {{ (busy() ? 'mpin.working' : 'mpin.save') | t }}
+          </button>
+        </form>
+      }
+    }
+
+    <p class="mpin-foot">{{ 'mpin.shared' | t }}</p>
+  </section>
+</div>

@@ -1,0 +1,38 @@
+<button
+  type="button"
+  class="bin"
+  [class.bin--filled]="filled()"
+  [class.bin--bump]="bump()"
+  [attr.aria-label]="label()"
+  [attr.title]="label()"
+  (click)="open()"
+>
+  <svg class="bin-icon" viewBox="0 0 48 48" aria-hidden="true">
+    @if (filled()) {
+      <g class="bin-paper">
+        <path d="M17.2 19 18.4 13l4.6 1.3-.9 4.7z" />
+        <path d="M24.5 19 26.6 11.6l5.6 2.2-1.8 5.2z" />
+        <circle cx="22.4" cy="16.4" r="3" />
+      </g>
+      <g class="bin-lid" transform="translate(-1 -7.5) rotate(-14 13 15)">
+        <path d="M13 15h22" />
+        <path d="M20 15v-2.4a1.6 1.6 0 0 1 1.6-1.6h4.8a1.6 1.6 0 0 1 1.6 1.6V15" />
+      </g>
+    } @else {
+      <g class="bin-lid">
+        <path d="M13 15h22" />
+        <path d="M20 15v-2.4a1.6 1.6 0 0 1 1.6-1.6h4.8a1.6 1.6 0 0 1 1.6 1.6V15" />
+      </g>
+    }
+    <path class="bin-can" d="M15.5 19h17l-1.5 19.3a2 2 0 0 1-2 1.7h-10a2 2 0 0 1-2-1.7z" />
+    <path class="bin-ribs" d="M21 23.5v12M24 23.5v12M27 23.5v12" />
+  </svg>
+  @if (!session.unlocked()) {
+    <span class="bin-badge bin-badge--lock" aria-hidden="true">
+      <svg viewBox="0 0 16 16"><path d="M5 7V5.2a3 3 0 0 1 6 0V7M4 7h8v6H4z" /></svg>
+    </span>
+  } @else if (store.count()) {
+    <span class="bin-badge" aria-hidden="true">{{ store.count() }}</span>
+  }
+  <span class="bin-label" aria-hidden="true">{{ 'trash.nav' | t }}</span>
+</button>

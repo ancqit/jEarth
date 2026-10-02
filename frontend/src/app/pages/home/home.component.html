@@ -76,6 +76,21 @@
               </ol>
             </div>
           }
+          <div class="trash-row">
+            @if (homeTrash.has(hit.id)) {
+              <a class="trash-btn trash-btn--in" routerLink="/home-trash">{{ 'trash.added' | t }}</a>
+            } @else {
+              <button
+                type="button"
+                class="trash-btn"
+                [disabled]="homeTrash.isBusy(hit.id)"
+                [attr.aria-label]="'trash.addAria' | t: { item: hit.title }"
+                (click)="homeTrash.add(hit.id)"
+              >
+                {{ 'trash.add' | t }}
+              </button>
+            }
+          </div>
         </li>
       }
     </ol>

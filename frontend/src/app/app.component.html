@@ -73,6 +73,12 @@
   <router-outlet />
 </main>
 @if (!styleBookOpen()) {
+  <app-trash-bin />
+}
+@if (contactSession.promptOpen()) {
+  <app-mpin-modal />
+}
+@if (!styleBookOpen()) {
   <footer class="foot">
     <p>{{ footerKey() | t }}</p>
     <p class="copyright">© {{ year }} Sunskriti Data Management Company</p>

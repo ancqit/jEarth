@@ -44,6 +44,13 @@ export class ApiService {
     });
   }
 
+  delete<T>(path: string, options?: ApiRequestOptions): Observable<T> {
+    return this.http.delete<T>(this.url(path), {
+      context: options?.context,
+      headers: options?.headers ? new HttpHeaders(options.headers) : undefined,
+    });
+  }
+
   private url(path: string): string {
     return `${this.baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
   }
