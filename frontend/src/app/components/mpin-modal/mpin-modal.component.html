@@ -8,6 +8,9 @@
             @case ('mpin') {
               {{ 'mpin.title' | t }}
             }
+            @case ('create') {
+              {{ 'mpin.createTitle' | t }}
+            }
             @case ('set_mpin') {
               {{ 'mpin.setTitle' | t }}
             }
@@ -60,7 +63,72 @@
           <button type="submit" class="btn btn-primary mpin-submit" [disabled]="busy()">
             {{ (busy() ? 'mpin.working' : 'mpin.unlock') | t }}
           </button>
-          <button type="button" class="mpin-link" (click)="startSetup()">{{ 'mpin.firstTime' | t }}</button>
+          <div class="mpin-links">
+            <button type="button" class="mpin-link" (click)="startCreate()">{{ 'mpin.newHere' | t }}</button>
+            <button type="button" class="mpin-link mpin-link--quiet" (click)="startSetup()">
+              {{ 'mpin.forgot' | t }}
+            </button>
+          </div>
+        </form>
+      }
+      @case ('create') {
+        <form class="mpin-form" (submit)="$event.preventDefault(); create()">
+          <p class="mpin-lede">{{ 'mpin.createLede' | t }}</p>
+          <label>
+            <span>{{ 'mpin.phone' | t }}</span>
+            <input
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+91 98765 43210"
+              [ngModel]="phone()"
+              (ngModelChange)="phone.set($event)"
+              name="phone"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.name' | t }}</span>
+            <input
+              type="text"
+              autocomplete="name"
+              [ngModel]="name()"
+              (ngModelChange)="name.set($event)"
+              name="name"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.newMpin' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="password"
+              inputmode="numeric"
+              autocomplete="new-password"
+              maxlength="6"
+              [ngModel]="newMpin()"
+              (ngModelChange)="newMpin.set($event)"
+              name="newMpin"
+            />
+          </label>
+          <label>
+            <span>{{ 'mpin.confirmMpin' | t }}</span>
+            <input
+              class="mpin-digits"
+              type="password"
+              inputmode="numeric"
+              autocomplete="new-password"
+              maxlength="6"
+              [ngModel]="confirmMpin()"
+              (ngModelChange)="confirmMpin.set($event)"
+              name="confirmMpin"
+            />
+          </label>
+          @if (error()) {
+            <p class="mpin-error" role="alert">{{ error() }}</p>
+          }
+          <button type="submit" class="btn btn-primary mpin-submit" [disabled]="busy()">
+            {{ (busy() ? 'mpin.working' : 'mpin.create') | t }}
+          </button>
+          <button type="button" class="mpin-link" (click)="backToMpin()">{{ 'mpin.haveMpin' | t }}</button>
         </form>
       }
       @case ('details') {

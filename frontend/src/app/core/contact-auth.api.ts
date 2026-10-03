@@ -27,10 +27,19 @@ export class ContactAuthApi {
   private readonly api = inject(ApiService);
   private readonly context = new HttpContext().set(SKIP_SESSION_AUTH, true);
 
-  loginWithMpin(phoneNumber: string, mpin: string): Observable<ContactAuthResponse> {
+  unlock(phoneNumber: string, mpin: string): Observable<ContactAuthResponse> {
     return this.api.post<ContactAuthResponse>(
-      '/auth/catalog-contacts/mpin/login',
+      '/auth/catalog-contacts/mpin/unlock',
       { phone_number: phoneNumber, mpin },
+      { context: this.context },
+    );
+  }
+
+  /** Phone + MPIN sign-up with no email or SMS; refused (409) if the number already has an account. */
+  create(phoneNumber: string, mpin: string, displayName?: string): Observable<ContactAuthResponse> {
+    return this.api.post<ContactAuthResponse>(
+      '/auth/catalog-contacts/mpin/create',
+      { phone_number: phoneNumber, mpin, display_name: displayName || undefined },
       { context: this.context },
     );
   }
