@@ -144,6 +144,18 @@
   cursor: pointer;
 }
 
+.mpin-links {
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+}
+
+.mpin-link--quiet {
+  color: var(--mute);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
 .mpin-link:disabled {
   opacity: 0.5;
   cursor: default;
