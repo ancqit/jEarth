@@ -8,13 +8,13 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { RecaptchaService } from '../../core/recaptcha.service';
 
-type Phase = 'mpin' | 'details' | 'otp' | 'set_mpin';
+type Phase = 'mpin' | 'create' | 'details' | 'otp' | 'set_mpin';
 
 const PHONE = /^[+]?[\d\s-]{8,15}$/;
 const MPIN = /^\d{4,6}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** Junction customer unlock: phone + MPIN, or SMS OTP to set a new MPIN (same flow as junction.today). */
+/** Junction customer unlock: phone + MPIN; new numbers set one directly; forgot-MPIN resets by SMS. */
 @Component({
   selector: 'app-mpin-modal',
   imports: [FormsModule, TranslatePipe],
@@ -55,11 +55,49 @@ export class MpinModalComponent {
     }
     this.start();
     this.api
-      .loginWithMpin(phone, this.mpin().trim())
+      .unlock(phone, this.mpin().trim())
       .pipe(finalize(() => this.busy.set(false)))
       .subscribe({
         next: (res) => this.finish(res),
         error: (err: unknown) => this.error.set(this.readError(err, 'mpin.errWrong')),
+      });
+  }
+
+  startCreate(): void {
+    this.error.set(null);
+    this.hint.set(null);
+    this.newMpin.set('');
+    this.confirmMpin.set('');
+    this.phase.set('create');
+  }
+
+  create(): void {
+    const phone = this.phone().trim();
+    const mpin = this.newMpin().trim();
+    if (!PHONE.test(phone)) {
+      return this.fail('mpin.errPhone');
+    }
+    if (!MPIN.test(mpin)) {
+      return this.fail('mpin.errMpin');
+    }
+    if (mpin !== this.confirmMpin().trim()) {
+      return this.fail('mpin.errMatch');
+    }
+    this.start();
+    this.api
+      .create(phone, mpin, this.name().trim() || undefined)
+      .pipe(finalize(() => this.busy.set(false)))
+      .subscribe({
+        next: (res) => this.finish(res),
+        error: (err: unknown) => {
+          if (err instanceof HttpErrorResponse && err.status === 409) {
+            this.mpin.set('');
+            this.phase.set('mpin');
+            this.error.set(this.i18n.t('mpin.errTaken'));
+            return;
+          }
+          this.error.set(this.readError(err, 'mpin.errSave'));
+        },
       });
   }
 
@@ -171,6 +209,9 @@ export class MpinModalComponent {
     if (err instanceof HttpErrorResponse) {
       if (err.status === 401 && fallbackKey === 'mpin.errWrong') {
         return this.i18n.t('mpin.errWrong');
+      }
+      if (err.status === 429) {
+        return this.i18n.t('mpin.errLocked');
       }
       const detail = err.error?.detail;
       if (typeof detail === 'string' && detail.trim()) {
