@@ -1,15 +1,17 @@
-import { Injectable, signal } from '@angular/core';
-import { AppLang, TRANSLATIONS } from './translations';
+import { Injectable, computed, signal } from '@angular/core';
+import { AppLang, LANGUAGES, TRANSLATIONS, contentLangFor } from './translations';
 
 const STORAGE_KEY = 'junction.earth.lang';
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
   readonly lang = signal<AppLang>(this.readInitial());
+  /** Language for archive entries, PDFs and voice clips (Sanskrit reads the Hindi ones). */
+  readonly contentLang = computed(() => contentLangFor(this.lang()));
 
   t(key: string, params?: Record<string, string | number>): string {
-    const dict = TRANSLATIONS[this.lang()] ?? TRANSLATIONS.hi;
-    let text = dict[key] ?? TRANSLATIONS.en[key] ?? key;
+    const lang = this.lang();
+    let text = TRANSLATIONS[lang]?.[key] ?? TRANSLATIONS[contentLangFor(lang)][key] ?? TRANSLATIONS.en[key] ?? key;
     if (params) {
       for (const [name, value] of Object.entries(params)) {
         text = text.replaceAll(`{{${name}}}`, String(value));
@@ -25,24 +27,20 @@ export class I18nService {
     } catch {
       /* ignore */
     }
-    document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
-  }
-
-  toggle(): void {
-    this.setLang(this.lang() === 'hi' ? 'en' : 'hi');
+    document.documentElement.lang = lang;
   }
 
   private readInitial(): AppLang {
+    let lang: AppLang = 'hi';
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === 'hi' || stored === 'en') {
-        document.documentElement.lang = stored === 'hi' ? 'hi' : 'en';
-        return stored;
+      if (LANGUAGES.some((option) => option.code === stored)) {
+        lang = stored as AppLang;
       }
     } catch {
       /* ignore */
     }
-    document.documentElement.lang = 'hi';
-    return 'hi';
+    document.documentElement.lang = lang;
+    return lang;
   }
 }

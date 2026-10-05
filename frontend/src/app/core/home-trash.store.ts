@@ -4,7 +4,7 @@ import { Observable, finalize } from 'rxjs';
 import { ApiService } from './api.service';
 import { ContactSessionService } from './contact-session.service';
 import { SKIP_SESSION_AUTH } from './http-context';
-import { AppLang } from './i18n/translations';
+import { ContentLang } from './i18n/translations';
 
 export interface HomeTrashItem {
   entry_id: string;
@@ -128,7 +128,7 @@ export class HomeTrashStore {
       });
   }
 
-  downloadPdf(lang: AppLang): Observable<Blob> {
+  downloadPdf(lang: ContentLang): Observable<Blob> {
     return this.api.getBlob('/earth/home-trash/pdf', { lang }, this.options());
   }
 

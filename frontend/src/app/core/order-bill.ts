@@ -13,7 +13,7 @@ export class OrderBillService {
     if (!order.bill_token) {
       throw new Error('Order has no bill token');
     }
-    const blob = await firstValueFrom(this.ordersApi.bill(order.id, order.bill_token, this.i18n.lang()));
+    const blob = await firstValueFrom(this.ordersApi.bill(order.id, order.bill_token, this.i18n.contentLang()));
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

@@ -44,7 +44,7 @@ export class HomeComponent {
           if (!trimmed) {
             return of([] as WasteSearchHit[]);
           }
-          return this.wasteApi.search(trimmed, this.i18n.lang());
+          return this.wasteApi.search(trimmed, this.i18n.contentLang());
         }),
         takeUntilDestroyed(this.destroyRef),
       )
@@ -60,13 +60,13 @@ export class HomeComponent {
       });
 
     effect(() => {
-      this.i18n.lang();
+      const lang = this.i18n.contentLang();
       const q = untracked(() => this.query().trim());
       if (!q) {
         return;
       }
       untracked(() => this.loading.set(true));
-      this.wasteApi.search(q, this.i18n.lang()).subscribe({
+      this.wasteApi.search(q, lang).subscribe({
         next: (hits) => {
           this.results.set(hits);
           this.loading.set(false);

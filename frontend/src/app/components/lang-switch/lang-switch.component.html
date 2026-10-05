@@ -1,0 +1,43 @@
+<button
+  #trigger
+  type="button"
+  class="trigger"
+  [class.trigger--open]="open()"
+  aria-haspopup="dialog"
+  [attr.aria-expanded]="open()"
+  [attr.aria-label]="'lang.open' | t"
+  (click)="toggle()"
+>
+  <span class="glyph" aria-hidden="true">अ</span>
+  <span class="current" [attr.lang]="current().code">{{ current().native }}</span>
+  <svg class="chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" /></svg>
+</button>
+
+@if (open()) {
+  <div #pop class="pop" role="dialog" [attr.aria-label]="'lang.group' | t" [style.--shift.px]="shift()">
+    <p class="pop-title">{{ 'lang.group' | t }}</p>
+    <div class="slider" [style.--index]="index()" [style.--count]="languages.length">
+      <span class="thumb" aria-hidden="true"></span>
+      @for (option of languages; track option.code; let i = $index) {
+        <span class="stop" [class.stop--on]="i === index()" [attr.lang]="option.code" aria-hidden="true">
+          <b>{{ option.short }}</b>
+          {{ option.native }}
+        </span>
+      }
+      <input
+        #range
+        type="range"
+        min="0"
+        [max]="languages.length - 1"
+        step="1"
+        [value]="index()"
+        [attr.aria-label]="'lang.group' | t"
+        [attr.aria-valuetext]="current().native"
+        (input)="onSlide($event)"
+      />
+    </div>
+    @if (i18n.lang() === 'sa') {
+      <p class="note">{{ 'lang.contentNote' | t }}</p>
+    }
+  </div>
+}

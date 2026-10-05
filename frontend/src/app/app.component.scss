@@ -115,29 +115,6 @@ nav {
   background: rgba(243, 215, 130, 0.28);
 }
 
-.lang-toggle {
-  display: inline-flex;
-  border: 1px solid rgba(25, 75, 49, 0.18);
-  border-radius: 999px;
-  overflow: hidden;
-  background: rgba(255, 254, 251, 0.9);
-}
-
-.lang-toggle button {
-  border: 0;
-  background: transparent;
-  color: var(--ink-soft);
-  font: 700 0.72rem/1 inherit;
-  letter-spacing: 0.04em;
-  padding: 0.4rem 0.65rem;
-  cursor: pointer;
-}
-
-.lang-toggle button.active {
-  background: rgba(25, 75, 49, 0.12);
-  color: var(--forest);
-}
-
 nav a,
 .tools a,
 .today {

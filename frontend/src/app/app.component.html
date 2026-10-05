@@ -56,14 +56,7 @@
       [routerLinkActiveOptions]="{ exact: true }"
       >{{ 'nav.style' | t }}</a
     >
-    <div class="lang-toggle" role="group" [attr.aria-label]="'lang.group' | t">
-      <button type="button" [class.active]="i18n.lang() === 'hi'" (click)="i18n.setLang('hi')">
-        {{ 'lang.hi' | t }}
-      </button>
-      <button type="button" [class.active]="i18n.lang() === 'en'" (click)="i18n.setLang('en')">
-        {{ 'lang.en' | t }}
-      </button>
-    </div>
+    <app-lang-switch />
     <a class="today" href="https://junction.today" target="_blank" rel="noreferrer">{{
       'nav.today' | t
     }}</a>

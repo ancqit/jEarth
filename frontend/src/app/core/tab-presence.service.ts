@@ -59,7 +59,7 @@ export class TabPresenceService {
     for (const audio of this.clips.values()) {
       audio.pause();
     }
-    const audio = this.clip(`/sounds/${clip}-${this.i18n.lang()}.mp3`);
+    const audio = this.clip(`/sounds/${clip}-${this.i18n.contentLang()}.mp3`);
     audio.currentTime = 0;
     audio
       .play()
