@@ -46,16 +46,16 @@ export class HomeTrashComponent {
   }
 
   title(item: HomeTrashItem): string {
-    return this.i18n.lang() === 'hi' ? item.title_hi : item.title_en;
+    return this.i18n.contentLang() === 'hi' ? item.title_hi : item.title_en;
   }
 
   otherTitle(item: HomeTrashItem): string {
-    const other = this.i18n.lang() === 'hi' ? item.title_en : item.title_hi;
+    const other = this.i18n.contentLang() === 'hi' ? item.title_en : item.title_hi;
     return other && other !== this.title(item) ? other : '';
   }
 
   steps(item: HomeTrashItem): string[] {
-    const steps = this.i18n.lang() === 'hi' ? item.dispose_hi : item.dispose_en;
+    const steps = this.i18n.contentLang() === 'hi' ? item.dispose_hi : item.dispose_en;
     return steps.length ? steps : item.dispose_en;
   }
 
@@ -69,7 +69,7 @@ export class HomeTrashComponent {
     }
     this.downloading.set(true);
     this.store
-      .downloadPdf(this.i18n.lang())
+      .downloadPdf(this.i18n.contentLang())
       .pipe(finalize(() => this.downloading.set(false)))
       .subscribe({
         next: (blob) => this.store.saveBlob(blob),

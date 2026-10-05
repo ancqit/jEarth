@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { ApiService } from './api.service';
 import { SKIP_SESSION_AUTH } from './http-context';
-import { AppLang } from './i18n/translations';
+import { ContentLang } from './i18n/translations';
 import { SessionService } from './session.service';
 
 export interface OrderLineItemPayload {
@@ -58,7 +58,7 @@ export class OrdersApi {
   }
 
   /** The shared Junction bill PDF, opened with the order's bill token. */
-  bill(orderId: string, billToken: string, lang: AppLang): Observable<Blob> {
+  bill(orderId: string, billToken: string, lang: ContentLang): Observable<Blob> {
     return this.api.getBlob(
       `/orders/${encodeURIComponent(orderId)}/bill.pdf`,
       { token: billToken, lang },

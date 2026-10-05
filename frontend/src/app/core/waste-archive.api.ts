@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { searchWasteArchive, WasteArchiveEntry } from '../data/waste-archive';
+import { ContentLang } from './i18n/translations';
 
 export interface WasteSearchSource {
   url: string;
@@ -30,7 +31,7 @@ export interface WasteSearchResponse {
 export class WasteArchiveApi {
   private readonly api = inject(ApiService);
 
-  search(query: string, lang: 'hi' | 'en'): Observable<WasteSearchHit[]> {
+  search(query: string, lang: ContentLang): Observable<WasteSearchHit[]> {
     const q = query.trim();
     if (!q) {
       return of([]);
@@ -44,7 +45,7 @@ export class WasteArchiveApi {
   }
 
   /** Offline / API-down fallback using the bundled seed archive. */
-  private localFallback(query: string, lang: 'hi' | 'en'): WasteSearchHit[] {
+  private localFallback(query: string, lang: ContentLang): WasteSearchHit[] {
     return searchWasteArchive(query).map((entry: WasteArchiveEntry) => ({
       id: entry.id,
       title: lang === 'hi' ? entry.nameHi : entry.nameEn,
