@@ -79,7 +79,7 @@ export class HomeTrashStore {
         },
         error: (err: unknown) => {
           if (background && err instanceof HttpErrorResponse && err.status === 401) {
-            this.session.logout();
+            this.session.endSession();
             return;
           }
           this.fail(err, () => this.load());

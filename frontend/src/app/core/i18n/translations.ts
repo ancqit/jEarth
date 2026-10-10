@@ -27,6 +27,10 @@ export const TRANSLATIONS: Record<AppLang, TranslationDict> = {
     'lang.group': 'भाषा',
     'lang.open': 'भाषा बदलें',
     'lang.contentNote': 'चीज़ों के नाम, निपटान के तरीके और PDF अभी हिंदी में ही हैं।',
+    'cookies.label': 'कुकीज़',
+    'cookies.text':
+      'हम आपको साइन इन रखने और आपकी भाषा याद रखने के लिए इस डिवाइस पर थोड़ा डेटा (कुकीज़ और लोकल स्टोरेज) रखते हैं। लॉग आउट करने या सत्र खत्म होने पर आपका सत्र साफ़ हो जाता है।',
+    'cookies.ok': 'ठीक है',
     'brand.waste': 'कचरा खोज',
     'brand.grow': 'मशरूम फ़ार्म',
     'brand.style': 'स्टाइल',
@@ -217,6 +221,10 @@ export const TRANSLATIONS: Record<AppLang, TranslationDict> = {
     'lang.group': 'Language',
     'lang.open': 'Change language',
     'lang.contentNote': 'Item names, disposal steps and PDFs stay in Hindi for now.',
+    'cookies.label': 'Cookies',
+    'cookies.text':
+      'We keep a little data on this device (cookies and local storage) to keep you signed in and remember your language. Your session is cleared when you log out or it expires.',
+    'cookies.ok': 'Got it',
     'brand.waste': 'Waste search',
     'brand.grow': 'Mushroom farm',
     'brand.style': 'Style',
@@ -407,6 +415,10 @@ export const TRANSLATIONS: Record<AppLang, TranslationDict> = {
     'lang.group': 'भाषा',
     'lang.open': 'भाषां चिनोतु',
     'lang.contentNote': 'वस्तूनां नामानि, निष्कासन-विधयः PDF च सम्प्रति हिन्द्याम् एव।',
+    'cookies.label': 'कुकीज्',
+    'cookies.text':
+      'भवान् प्रविष्टः तिष्ठेत्, भवतः भाषा च स्मर्येत इति हेतोः वयम् अस्मिन् उपकरणे अल्पं दत्तांशं (कुकीज्, स्थानीय-संग्रहः च) रक्षामः। निर्गमने सत्र-समाप्तौ वा भवतः सत्रं मार्ज्यते।',
+    'cookies.ok': 'अस्तु',
     'brand.waste': 'अवकर-अन्वेषणम्',
     'brand.grow': 'छत्रक-कृषिः',
     'brand.style': 'शैली',

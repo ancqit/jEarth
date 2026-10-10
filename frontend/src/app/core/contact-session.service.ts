@@ -60,15 +60,27 @@ export class ContactSessionService {
     after?.();
   }
 
+  /** Signing out on purpose also forgets the phone, so nothing personal stays on the device. */
   logout(): void {
-    this.contact.set(null);
-    this.write(null);
+    this.endSession();
+    this.lastPhone.set('');
+    try {
+      localStorage.removeItem(`${STORAGE_KEY}.phone`);
+    } catch {
+      /* ignore */
+    }
   }
 
-  /** Called when the API rejects the token (expired, or MPIN reset elsewhere). */
+  /** Called when the API rejects the token (expired, or MPIN reset elsewhere); the phone stays prefilled. */
   expire(after?: () => void): void {
-    this.logout();
+    this.endSession();
     this.requestUnlock(after, 'expired');
+  }
+
+  /** Drops the token but keeps the phone for the next unlock. */
+  endSession(): void {
+    this.contact.set(null);
+    this.write(null);
   }
 
   private read(): StoredContact | null {
