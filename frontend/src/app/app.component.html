@@ -71,6 +71,7 @@
 @if (contactSession.promptOpen()) {
   <app-mpin-modal />
 }
+<app-cookie-notice />
 @if (!styleBookOpen()) {
   <footer class="foot">
     <p>{{ footerKey() | t }}</p>

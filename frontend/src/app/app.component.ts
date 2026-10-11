@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
+import { CookieNoticeComponent } from './components/cookie-notice/cookie-notice.component';
 import { LangSwitchComponent } from './components/lang-switch/lang-switch.component';
 import { MpinModalComponent } from './components/mpin-modal/mpin-modal.component';
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
@@ -19,6 +20,7 @@ export type EarthDesk = 'waste' | 'grow' | 'style';
     RouterLink,
     RouterLinkActive,
     TranslatePipe,
+    CookieNoticeComponent,
     LangSwitchComponent,
     MpinModalComponent,
     TrashBinComponent,
